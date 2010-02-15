@@ -6,7 +6,13 @@ A new way of writing HTML and CSS.
 General Information
 --------------------
 
-Zen Coding is a set of HTML and CSS tools that let you write shorthand and have the code expanded to full HTML and/or CSS. This is a Gedit plugin that integrates Zen Coding into Gedit.
+Zen Coding is a set of HTML and CSS tools that let you write shorthand and have the code expanded to full HTML and/or CSS. 
+
+- [Homepage](http://code.google.com/p/zen-coding/)
+- [Demo video](http://vimeo.com/7405114)
+- [Examples and usage](http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/)
+
+This is a Gedit plugin that integrates Zen Coding into Gedit.
 
 Installation Instructions
 --------------------------

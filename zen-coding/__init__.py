@@ -1,24 +1,28 @@
 #
 # @file __init__.py
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# THIS CODE IS RELEASED UNDER THE UNLICENSE
+# This is free and unencumbered software released into the public domain.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# Anyone is free to copy, modify, publish, use, compile, sell, or distribute
+# this software, either in source code form or as a compiled binary, for any
+# purpose, commercial or non-commercial, and by any means.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# In jurisdictions that recognize copyright laws, the author or authors of this
+# software dedicate any and all copyright interest in the software to the public
+# domain. We make this dedication for the benefit of the public at large and to
+# the detriment of our heirs and successors. We intend this dedication to be an
+# overt act of relinquishment in perpetuity of all present and future rights to
+# this software under copyright law.
 #
-# Zen Coding - http://code.google.com/p/zen-coding
-# Gedit Plugin - http://github.com/mikecrittenden/zen-coding-gedit
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-# Heavily based on Guillaume Chazarain's completion.py
+# For more information, please refer to unlicense.org/
 
 
 import gedit, gobject, string, gtk, re, zen_core

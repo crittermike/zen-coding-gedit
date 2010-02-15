@@ -21,7 +21,7 @@
 # Heavily based on Guillaume Chazarain's completion.py
 
 
-import gedit, gobject, gtk, re, zen_core
+import gedit, gobject, string, gtk, re, zen_core
 
 class ZenCodingPlugin(gedit.Plugin):
 	"""
@@ -104,7 +104,7 @@ class ZenCodingPlugin(gedit.Plugin):
 		# Find the last space in the line and remove it, setting a variable
 		# 'before' to the current line.
 		words = line.split(" ")
-		before = words[-1]
+		before = words[-1].lstrip()
 		if not before:
 		    return
 

@@ -52,7 +52,7 @@ class ZenCodingPlugin(gedit.Plugin):
 
 		# Connect the newly created action with key combo
 		complete_action.connect("activate",
-		                        lambda a: self.expand_zencode_cb(window))
+		                        lambda a: self.expand_zencode(window))
 		action_group.add_action_with_accel(complete_action,
 		                                   "<Ctrl><Shift>E")
 
@@ -82,7 +82,7 @@ class ZenCodingPlugin(gedit.Plugin):
 		ui_manager.remove_ui(ui_merge_id)
 
 
-	def expand_zencode_cb(self, window):
+	def expand_zencode(self, window):
 		"The action which handles the code expansion itself."
 
         # Get the window's active view's buffer.
@@ -98,6 +98,9 @@ class ZenCodingPlugin(gedit.Plugin):
 		# Grab the text from the start of the line to the cursor.
 		line = buffer.get_text(line_iter, cursor_iter)
 
+		# Grab the line's indention and store it.
+		indent = re.match(r"\s*", line).group()
+
 		# Find the last space in the line and remove it, setting a variable
 		# 'before' to the current line.
 		words = line.split(" ")
@@ -107,14 +110,16 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Using the 'before' variable, convert it from Zen Code
         # to expanded code. If there isn't anything, just return.
-		tree = zen_core.parse_into_tree(before)
-		if not tree:
+		after = zen_core.expand_abbreviation(before,'html','xhtml')
+		if not after:
 		    return
-		after = tree.to_string(True)
 
 		# We are currently lame and do not know how to do placeholders.
 		# So remove all | characters from after.
 		after = after.replace("|", "")
+
+		# Automatically indent the string based on how far the line was indented.
+		after = zen_core.pad_string(after,indent)
 
 		# Delete the last word in the line (i.e., the 'before' text, aka the
 		# Zen un-expanded code), so that we can replace it.

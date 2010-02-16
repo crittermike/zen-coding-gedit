@@ -1,5 +1,6 @@
 #
 # @file __init__.py
+# Does the heavy lifting behind connecting Zen Coding to Gedit.
 #
 # THIS CODE IS RELEASED UNDER THE UNLICENSE
 # This is free and unencumbered software released into the public domain.

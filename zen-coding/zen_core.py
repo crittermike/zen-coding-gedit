@@ -25,7 +25,7 @@ Created on Apr 17, 2009
 '''
 from zen_settings import zen_settings
 import re
-import stparser
+import zen_parser
 
 newline = '\n'
 "Newline symbol"
@@ -422,7 +422,7 @@ class Tag(object):
 
 		abbr = get_abbreviation(doc_type, name)
 
-		if abbr and abbr.type == stparser.TYPE_REFERENCE:
+		if abbr and abbr.type == zen_parser.TYPE_REFERENCE:
 			abbr = get_abbreviation(doc_type, abbr.value)
 
 		self.name = abbr and abbr.value['name'] or name.replace('+', '')
@@ -757,5 +757,5 @@ setup_profile('plain', {'tag_nl': False, 'indent': False, 'place_cursor': False}
 # This method call explicity loads default settings from zen_settings.py on start up
 # Comment this line if you want to load data from other resources (like editor's
 # native snippet)
-update_settings(stparser.get_settings())
+update_settings(zen_parser.get_settings())
 

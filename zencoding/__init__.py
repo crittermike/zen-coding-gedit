@@ -94,6 +94,11 @@ class ZenCodingPlugin(gedit.Plugin):
         view = window.get_active_view()
         buffer = view.get_buffer()
 
+        # Get the language of the current document.
+        lang = window.get_active_document().get_language()
+        if lang != None:
+            lang = lang.get_name()
+
         # Grab the current cursor position.
         cursor_iter = buffer.get_iter_at_mark(buffer.get_insert())
 
@@ -116,7 +121,10 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Using the 'before' variable, convert it from Zen Code
         # to expanded code. If there isn't anything, just return.
-        after = zen_core.expand_abbreviation(before,'html','xhtml')
+        if lang == 'CSS':
+            after = zen_core.expand_abbreviation(before,'css','xhtml')
+        else:
+            after = zen_core.expand_abbreviation(before,'html','xhtml')
         if not after:
             return
 

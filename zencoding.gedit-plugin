@@ -1,6 +1,6 @@
 [Gedit Plugin]
 Loader=python
-Module=zen-coding
+Module=zencoding
 IAge=2
 Name=Zen Coding
 Description=Enables Zen Coding's CSS and HTML shorthand tools for Gedit.

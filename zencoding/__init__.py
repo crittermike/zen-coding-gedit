@@ -2,29 +2,6 @@
 # @file __init__.py
 # Does the heavy lifting behind connecting Zen Coding to Gedit.
 #
-# THIS CODE IS RELEASED UNDER THE UNLICENSE
-# This is free and unencumbered software released into the public domain.
-#
-# Anyone is free to copy, modify, publish, use, compile, sell, or distribute
-# this software, either in source code form or as a compiled binary, for any
-# purpose, commercial or non-commercial, and by any means.
-#
-# In jurisdictions that recognize copyright laws, the author or authors of this
-# software dedicate any and all copyright interest in the software to the public
-# domain. We make this dedication for the benefit of the public at large and to
-# the detriment of our heirs and successors. We intend this dedication to be an
-# overt act of relinquishment in perpetuity of all present and future rights to
-# this software under copyright law.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# For more information, please refer to unlicense.org/
-
 
 import gedit, gobject, string, gtk, re, zen_core
 
@@ -42,10 +19,7 @@ class ZenCodingPlugin(gedit.Plugin):
     def activate(self, window):
         "Gedit callback: install the expansion feature into the UI"
 
-        # Get the UI manager into a variable.
         ui_manager = window.get_ui_manager()
-
-        # Create the Action Group.
         action_group = gtk.ActionGroup("GeditZenCodingPluginActions")
 
         # Create the GTK action to be used to connect the key combo
@@ -61,7 +35,6 @@ class ZenCodingPlugin(gedit.Plugin):
         action_group.add_action_with_accel(complete_action,
                                            "<Ctrl><Shift>E")
 
-        # Insert the action group into the UI manager
         ui_manager.insert_action_group(action_group, 0)
 
         # @TODO: Figure out what these lines do
@@ -76,12 +49,10 @@ class ZenCodingPlugin(gedit.Plugin):
     def deactivate(self, window):
         "Gedit callback: get rid of the expansion feature"
 
-        # Grab the UI manager and put it into a variable.
         ui_manager = window.get_ui_manager()
-
         (action_group, ui_merge_id) = ui_manager.__ui_data__
 
-        # Remove the UI data, action group, and UI itself for the plugin from Gedit
+        # Remove the UI data, action group, and UI itself from Gedit
         del ui_manager.__ui_data__
         ui_manager.remove_action_group(action_group)
         ui_manager.remove_ui(ui_merge_id)
@@ -90,7 +61,6 @@ class ZenCodingPlugin(gedit.Plugin):
     def expand_zencode(self, window):
         "The action which handles the code expansion itself."
 
-        # Get the window's active view and its buffer.
         view = window.get_active_view()
         buffer = view.get_buffer()
 
@@ -103,9 +73,6 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Grab the text from the start of the line to the cursor.
         line = buffer.get_text(line_iter, cursor_iter)
-
-        # Grab the line's indentation and store it.
-        indent = re.match(r"\s*", line).group()
 
         # Find the last space in the line and remove it, setting a variable
         # 'before' to the current line.
@@ -128,9 +95,8 @@ class ZenCodingPlugin(gedit.Plugin):
         if not after:
             return
 
-        # We are currently lame and do not know how to do placeholders.
-        # So remove all | characters from after.
-        after = after.replace("|", "")
+        # Grab the line's indentation and store it.
+        indent = re.match(r"\s*", line).group()
 
         # Automatically indent the string and replace \t (tab) with the
         # correct number of spaces.
@@ -139,6 +105,10 @@ class ZenCodingPlugin(gedit.Plugin):
             tabsize = view.get_tab_width()
             spaces = " " * tabsize
             after = after.replace("\t",spaces)
+
+        # We are currently lame and do not know how to do placeholders.
+        # So remove all | characters from after.
+        after = after.replace("|", "")
 
         # Delete the last word in the line (i.e., the 'before' text, aka the
         # Zen un-expanded code), so that we can replace it.

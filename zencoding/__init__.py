@@ -104,7 +104,7 @@ class ZenCodingPlugin(gedit.Plugin):
         # Grab the text from the start of the line to the cursor.
         line = buffer.get_text(line_iter, cursor_iter)
 
-        # Grab the line's indention and store it.
+        # Grab the line's indentation and store it.
         indent = re.match(r"\s*", line).group()
 
         # Find the last space in the line and remove it, setting a variable
@@ -129,9 +129,7 @@ class ZenCodingPlugin(gedit.Plugin):
         after = zen_core.pad_string(after,indent)
         if view.get_insert_spaces_instead_of_tabs():
             tabsize = view.get_tab_width()
-            spaces = ""
-            for i in range(tabsize):
-                spaces += " "
+            spaces = " " * tabsize
             after = after.replace("\t",spaces)
 
         # Delete the last word in the line (i.e., the 'before' text, aka the

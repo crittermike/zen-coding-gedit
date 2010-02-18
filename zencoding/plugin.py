@@ -1,6 +1,7 @@
 #
 # @file plugin.py
-# Does the heavy lifting behind connecting Zen Coding to Gedit.
+#
+# Connect Zen Coding to Gedit.
 #
 
 import gedit, gobject, string, gtk, re, core
@@ -18,7 +19,7 @@ class ZenCodingPlugin(gedit.Plugin):
         # to the Zen Coding expansion (i.e., the good stuff).
         complete_action = gtk.Action(name="ZenCodingAction",
                                      label="Expand Zen code...",
-                                     tooltip="Expand Zen Code in document to raw HTML",
+                                     tooltip="Expand Zen Code in document to raw HTML/CSS",
                                      stock_id=gtk.STOCK_GO_FORWARD)
 
         # Connect the newly created action with key combo
@@ -55,9 +56,32 @@ class ZenCodingPlugin(gedit.Plugin):
 
         view = window.get_active_view()
         buffer = view.get_buffer()
-
-        # Grab the current cursor position.
         cursor_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        statusbar = window.get_statusbar()
+
+        # Grab the current line.
+        line = self.get_line(buffer, cursor_iter)
+        before = self.get_shorthand(line)
+        if not before:
+            return
+
+        # Generate expanded code from the shorthand code based on the document's language.
+        lang = self.get_language(window)
+        after = core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
+        if not after:
+            return
+
+        # Indent the expanded code according to editor's preferences.
+        after = self.indent_code(line, after, window)
+
+        # Replace the shorthand code with the expanded code.
+        if self.replace_with_expanded(cursor_iter, buffer, before, after):
+            statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code expanded.')
+        else:
+            statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code couldn\'t expand. Try checking your syntax for mistakes.')
+
+    def get_line(self, buffer, cursor_iter):
+        """Get the full line currently being edited."""
 
         # Grab the first character in the line.
         line_iter = cursor_iter.copy()
@@ -66,32 +90,41 @@ class ZenCodingPlugin(gedit.Plugin):
         # Grab the text from the start of the line to the cursor.
         line = buffer.get_text(line_iter, cursor_iter)
 
-        # Find the last space in the line and remove it, setting a variable
-        # 'before' to the current line.
-        words = line.split(" ")
-        before = words[-1].lstrip()
-        if not before:
-            return
+        return line
 
-        # Get the language of the current document. Second line prevents an error
-        # if first line returns None.
-        lang = window.get_active_document().get_language()
-        lang = lang and lang.get_name()
-
-        # Using the 'before' variable, convert it from Zen Code
-        # to expanded code. If there isn't anything, just return.
-        after = zen_core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
-        if not after:
-            return
-
-        # Grab the line's indentation and store it.
-        indent = re.match(r"\s*", line).group()
+    def indent_code(self, line, code, editor):
+        """Indent the code properly according to the editor's preferences."""
 
         # Automatically indent the string and replace \t (tab) with the
         # correct number of spaces.
-        after = core.pad_string(after, indent)
-        if view.get_insert_spaces_instead_of_tabs():
-            after = after.replace("\t", " " * view.get_tab_width())
+        code = core.pad_string(code, re.match(r"\s*", line).group())
+        if editor.get_active_view().get_insert_spaces_instead_of_tabs():
+            code = code.replace("\t", " " * editor.get_active_view().get_tab_width())
+
+        return code
+
+    def get_language(self, editor):
+        """Get the language of the current document."""
+
+        lang = editor.get_active_document().get_language()
+        lang = lang and lang.get_name()
+
+        return lang
+
+    def get_shorthand(self, line):
+        """Grab the last word typed (i.e., the shorthand code)."""
+
+        # Find the last space in the line and remove it, setting a variable
+        # 'before' to the current line.
+        words = line.split(" ")
+        word = words[-1].lstrip()
+        if not word:
+            word = None
+
+        return word
+
+    def replace_with_expanded(self, cursor_iter, buffer, before, after):
+        """Replace the shorthand cod with the expanded code."""
 
         # We are currently lame and do not know how to do placeholders.
         # So remove all | characters from after.
@@ -100,10 +133,11 @@ class ZenCodingPlugin(gedit.Plugin):
         # Delete the last word in the line (i.e., the 'before' text, aka the
         # Zen un-expanded code), so that we can replace it.
         word_iter = cursor_iter.copy()
-        position_in_line = cursor_iter.get_line_index() - len(before)
-        word_iter.set_line_index(position_in_line)
+        word_iter.set_line_index(cursor_iter.get_line_index() - len(before))
         buffer.delete(word_iter, cursor_iter)
 
         # Insert the new expanded text.
         buffer.insert_at_cursor(after)
+
+        return True
 

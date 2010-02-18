@@ -76,7 +76,7 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Replace the shorthand code with the expanded code.
         if self.replace_with_expanded(cursor_iter, buffer, before, after):
-            statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code expanded.')
+            statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Expanded shorthand code into the real stuff.')
         else:
             statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code couldn\'t expand. Try checking your syntax for mistakes.')
 

@@ -5,6 +5,7 @@ Core Zen Coding library. Contains various text manipulation functions:
 
 == Expand abbreviation
 Expands abbreviation like ul#nav>li*5>a into a XHTML string.
+
 === How to use
 First, you have to extract current string (where cursor is) from your test
 editor and use <code>find_abbr_in_line()</code> method to extract abbreviation.
@@ -23,9 +24,9 @@ Created on Apr 17, 2009
 
 @author: Sergey Chikuyonok (http://chikuyonok.ru)
 '''
-from zen_settings import zen_settings
+from settings import zen_settings
 import re
-import zen_parser
+import parser
 
 newline = '\n'
 "Newline symbol"
@@ -422,7 +423,7 @@ class Tag(object):
 
 		abbr = get_abbreviation(doc_type, name)
 
-		if abbr and abbr.type == zen_parser.TYPE_REFERENCE:
+		if abbr and abbr.type == parser.TYPE_REFERENCE:
 			abbr = get_abbreviation(doc_type, abbr.value)
 
 		self.name = abbr and abbr.value['name'] or name.replace('+', '')
@@ -757,5 +758,5 @@ setup_profile('plain', {'tag_nl': False, 'indent': False, 'place_cursor': False}
 # This method call explicity loads default settings from zen_settings.py on start up
 # Comment this line if you want to load data from other resources (like editor's
 # native snippet)
-update_settings(zen_parser.get_settings())
+update_settings(parser.get_settings())
 

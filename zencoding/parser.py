@@ -8,7 +8,7 @@ from copy import deepcopy
 
 import re
 import types
-from zen_settings import zen_settings
+from settings import zen_settings
 
 _original_settings = deepcopy(zen_settings)
 

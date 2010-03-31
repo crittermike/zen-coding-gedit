@@ -10,7 +10,7 @@ class ZenCodingPlugin(gedit.Plugin):
     """A Gedit plugin to implement Zen Coding's HTML and CSS shorthand expander."""
 
     def activate(self, window):
-        "Install the expansion feature upon activation."
+        """Install the expansion feature upon activation."""
 
         ui_manager = window.get_ui_manager()
         action_group = gtk.ActionGroup("GeditZenCodingPluginActions")
@@ -40,7 +40,7 @@ class ZenCodingPlugin(gedit.Plugin):
         ui_manager.__ui_data__ = (action_group, ui_merge_id)
 
     def deactivate(self, window):
-        "Get rid of the expansion feature upon deactivation"
+        """Get rid of the expansion feature upon deactivation"""
 
         ui_manager = window.get_ui_manager()
         (action_group, ui_merge_id) = ui_manager.__ui_data__
@@ -52,7 +52,7 @@ class ZenCodingPlugin(gedit.Plugin):
 
 
     def expand_zencode(self, window):
-        "Take the shorthand code, expand it, and stick it back in the document."
+        """Take the shorthand code, expand it, and stick it back in the document."""
 
         view = window.get_active_view()
         buffer = view.get_buffer()

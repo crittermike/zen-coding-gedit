@@ -26,6 +26,6 @@ Credits
 -------
 
 - [Zen Coding](http://code.google.com/p/zen-coding/) - the music makers, the dreamers of the dream
-- [Mike Crittenden](http://mikethecoder.com) - the maintainer of the gedit plugin
+- [Mike Crittenden](http://mikethecoder.com) - the maintainer of the Gedit plugin
 - [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - originally wrote the Gedit plugin
 

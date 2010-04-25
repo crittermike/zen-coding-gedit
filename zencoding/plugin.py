@@ -64,8 +64,6 @@ class ZenCodingPlugin(gedit.Plugin):
         if not before:
             return
 
-        offset = cursor_iter.get_offset()
-
         # Generate expanded code from the shorthand code based on the document's language.
         lang = self.get_language(window)
         after = zen_core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
@@ -76,7 +74,7 @@ class ZenCodingPlugin(gedit.Plugin):
         after = self.indent_code(line, after, window)
 
         # Replace the shorthand code with the expanded code.
-        if self.replace_with_expanded(cursor_iter, buffer, before, after, offset, window.get_active_document()):
+        if self.replace_with_expanded(cursor_iter, buffer, before, after, window.get_active_document()):
             statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Expanded shorthand code into the real stuff.')
         else:
             statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code couldn\'t expand. Try checking your syntax for mistakes.')
@@ -124,11 +122,14 @@ class ZenCodingPlugin(gedit.Plugin):
 
         return word
 
-    def replace_with_expanded(self, cursor_iter, buffer, before, after, offset, document):
+    def replace_with_expanded(self, cursor_iter, buffer, before, after, document):
         """Replace the shorthand code with the expanded code."""
 
         # Replace the original caret_placerholder with a nicer one
         after = after.replace(zen_core.caret_placeholder, '[ ]')
+
+        # Save cursor's current location
+        offset = cursor_iter.get_offset()
 
         # Delete the last word in the line (i.e., the 'before' text, aka the
         # Zen un-expanded code), so that we can replace it.
@@ -152,4 +153,3 @@ class ZenCodingPlugin(gedit.Plugin):
         buffer.select_range(begin_match, end_match)
 
         return True
-

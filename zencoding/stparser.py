@@ -8,7 +8,7 @@ from copy import deepcopy
 
 import re
 import types
-from settings import zen_settings
+from zen_settings import zen_settings
 
 _original_settings = deepcopy(zen_settings)
 
@@ -19,7 +19,7 @@ TYPE_REFERENCE = 'zen-reference';
 
 re_tag = r'^<([\w\-]+(?:\:[\w\-]+)?)((?:\s+[\w\-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>'
 "Regular expression for XML tag matching"
-
+	
 re_attrs = r'([\w\-]+)\s*=\s*([\'"])(.*?)\2'
 "Regular expression for matching XML attributes"
 
@@ -63,7 +63,7 @@ def _make_abbreviation(key, tag_name, attrs, is_empty=False):
 		'name': tag_name,
 		'is_empty': is_empty
 	};
-
+	
 	if attrs:
 		result['attributes'] = [];
 		for m in re.findall(re_attrs, attrs):
@@ -71,7 +71,7 @@ def _make_abbreviation(key, tag_name, attrs, is_empty=False):
 				'name': m[0],
 				'value': m[2]
 			})
-
+			
 	return Entry(TYPE_ABBREVIATION, key, result)
 
 def _parse_abbreviations(obj):
@@ -121,7 +121,7 @@ def extend(parent, child):
 			extend(parent[p], value)
 		else:
 			parent[p] = value
-
+				
 
 
 def create_maps(obj):
@@ -148,14 +148,14 @@ def get_settings(user_settings=None):
 	"""
 	settings = deepcopy(_original_settings)
 	create_maps(settings)
-
+	
 	if user_settings:
 		user_settings = deepcopy(user_settings)
 		create_maps(user_settings)
 		extend(settings, user_settings)
-
+	
 	# now we need to parse final set of settings
 	parse(settings)
-
+	
 	return settings
-
+	

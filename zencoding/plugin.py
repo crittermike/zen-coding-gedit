@@ -26,7 +26,7 @@ class ZenCodingPlugin(gedit.Plugin):
         complete_action.connect("activate",
                                 lambda a: self.expand_zencode(window))
         action_group.add_action_with_accel(complete_action,
-                                           "<Ctrl><Shift>E")
+                                           "<Ctrl>E")
 
         ui_manager.insert_action_group(action_group, 0)
 

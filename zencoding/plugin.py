@@ -112,15 +112,7 @@ class ZenCodingPlugin(gedit.Plugin):
 
     def get_shorthand(self, line):
         """Grab the last word typed (i.e., the shorthand code)."""
-
-        # Find the last space in the line and remove it, setting a variable
-        # 'before' to the current line.
-        words = line.split(" ")
-        word = words[-1].lstrip()
-        if not word:
-            word = None
-
-        return word
+        return re.split('\s+', line)[-1]
 
     def replace_with_expanded(self, cursor_iter, buffer, before, after, document):
         """Replace the shorthand code with the expanded code."""

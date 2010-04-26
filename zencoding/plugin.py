@@ -79,7 +79,10 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Generate expanded code from the shorthand code based on the document's language.
         lang = self.get_language(window)
-        after = zen_core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
+        if lang == 'CSS': lang = 'css'
+        elif lang == 'XSLT': lang = 'xsl'
+        else: lang = 'html'
+        after = zen_core.expand_abbreviation(before, lang, 'xhtml')
         if not after:
             if is_selection:
                 buffer.select_range(insert_iter, bound_iter)

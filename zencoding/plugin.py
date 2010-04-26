@@ -60,14 +60,29 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Grab the current line.
         line = self.get_line(buffer, cursor_iter)
-        before = self.get_shorthand(line)
-        if not before:
-            return
+
+        # Get shorthand from selection...
+        is_selection = False
+        if buffer.get_has_selection():
+            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+            bound_iter = buffer.get_iter_at_mark(buffer.get_selection_bound())
+            before = buffer.get_text(bound_iter, insert_iter)
+            cursor_iter = (bound_iter if bound_iter.compare(insert_iter) == 1 else insert_iter).copy()
+            buffer.place_cursor(cursor_iter)
+            is_selection = True
+
+        # ... or from previous word
+        else:
+            before = self.get_shorthand(line)
+            if not before:
+                return
 
         # Generate expanded code from the shorthand code based on the document's language.
         lang = self.get_language(window)
         after = zen_core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
         if not after:
+            if is_selection:
+                buffer.select_range(insert_iter, bound_iter)
             return
 
         # Indent the expanded code according to editor's preferences.

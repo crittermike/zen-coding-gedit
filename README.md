@@ -22,7 +22,7 @@ Usage
 -----
 Type or select an abbreviation like `ul#navigation>li*5>a` then hit `Ctrl+Shift+E`.
 
-Once expanded, hit `Ctrl+G` or `Ctrl+Shift+G` to navigate between placeholders
+Once expanded, hit `Ctrl+G` or `Ctrl+Shift+G` to navigate between placeholders.
 
 Credits
 -------

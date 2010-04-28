@@ -18,7 +18,7 @@ class ZenCodingPlugin(gedit.Plugin):
         # Create the GTK action to be used to connect the key combo
         # to the Zen Coding expansion (i.e., the good stuff).
         complete_action = gtk.Action(name="ZenCodingAction",
-                                     label="Expand Zen code...",
+                                     label="Expand Zen code",
                                      tooltip="Expand Zen Code in document to raw HTML/CSS",
                                      stock_id=gtk.STOCK_GO_FORWARD)
 

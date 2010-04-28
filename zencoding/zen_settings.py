@@ -4,24 +4,24 @@ Zen Coding settings
 @link http://chikuyonok.ru
 """
 zen_settings = {
-
-    # Variables that can be placed inside snippets or abbreviations as ${variable}
-    # ${child} variable is reserved, don't use it
+			
+#	Variables that can be placed inside snippets or abbreviations as ${variable}
+#	${child} variable is reserved, don't use it
 	'variables': {
 		'lang': 'en',
 		'locale': 'en-US',
 		'charset': 'UTF-8',
 		'profile': 'xhtml',
-
-        # Inner element indentation
+		
+#		Inner element indentation
 		'indentation': '\t'
 	},
-
-	# Common settings are used for quick injection of user-defined snippets
+	
+	# common settings are used for quick injection of user-defined snippets
 	'common': {
-
+		
 	},
-
+	
 	'css': {
 		'extends': 'common',
 		'snippets': {
@@ -498,9 +498,10 @@ zen_settings = {
 			"wid": "widows:|;"
 		}
 	},
-
+	
 	'html': {
 		'extends': 'common',
+		'filters': 'html',
 		'snippets': {
 			'cc:ie6': '<!--[if lte IE 6]>\n\t${child}|\n<![endif]-->',
 			'cc:ie': '<!--[if IE]>\n\t${child}|\n<![endif]-->',
@@ -513,7 +514,7 @@ zen_settings = {
 					'</head>\n' +
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>',
-
+			
 			'html:4s': '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">\n' +
 					'<html lang="${lang}">\n' +
 					'<head>\n' +
@@ -522,7 +523,7 @@ zen_settings = {
 					'</head>\n' +
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>',
-
+			
 			'html:xt': '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' +
 					'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}">\n' +
 					'<head>\n' +
@@ -531,7 +532,7 @@ zen_settings = {
 					'</head>\n' +
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>',
-
+			
 			'html:xs': '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
 					'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}">\n' +
 					'<head>\n' +
@@ -540,7 +541,7 @@ zen_settings = {
 					'</head>\n' +
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>',
-
+			
 			'html:xxs': '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">\n' +
 					'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${lang}">\n' +
 					'<head>\n' +
@@ -549,7 +550,7 @@ zen_settings = {
 					'</head>\n' +
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>',
-
+			
 			'html:5': '<!DOCTYPE HTML>\n' +
 					'<html lang="${locale}">\n' +
 					'<head>\n' +
@@ -559,7 +560,7 @@ zen_settings = {
 					'<body>\n\t${child}|\n</body>\n' +
 					'</html>'
 		},
-
+		
 		'abbreviations': {
 			'a': '<a href=""></a>',
 			'a:link': '<a href="http://|"></a>',
@@ -670,8 +671,8 @@ zen_settings = {
 			'out': '<output></output>',
 			'det': '<details></details>',
 			'cmd': '<command></command>',
-
-			# expandos
+			
+#			expandos
 			'ol+': 'ol>li',
 			'ul+': 'ul>li',
 			'dl+': 'dl>dt+dd',
@@ -685,16 +686,17 @@ zen_settings = {
 			'optg+': 'optgroup>option'
 
 		},
-
+		
 		'element_types': {
 			'empty': 'area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed,keygen,command',
 			'block_level': 'address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,link,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul,h1,h2,h3,h4,h5,h6',
 			'inline_level': 'a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var'
 		}
 	},
-
+	
 	'xsl': {
 		'extends': 'common,html',
+		'filters': 'html, xsl',
 		'abbreviations': {
 			'tm': '<xsl:template match="" mode=""></xsl:template>',
 			'tmatch': 'tm',
@@ -713,10 +715,14 @@ zen_settings = {
 			'co': '<xsl:copy-of select=""/>',
 			'each': '<xsl:for-each select=""></xsl:for-each>',
 			'ap': '<xsl:apply-templates select="" mode=""/>',
-
-			# expandos
+			
+#			expandos
 			'choose+': 'xsl:choose>xsl:when+xsl:otherwise'
 		}
+	},
+	
+	'haml': {
+		'filters': 'haml',
+		'extends': 'html'
 	}
 }
-

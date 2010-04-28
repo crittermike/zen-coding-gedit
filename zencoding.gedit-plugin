@@ -2,9 +2,10 @@
 Loader=python
 Module=zencoding
 IAge=2
-Name=Zen Coding
+Name=Zen Coding 0.6
 Description=Enables Zen Coding's CSS and HTML shorthand tools for Gedit.
-Authors=Mike Crittenden <mike@mikethecoder.com>, Zen Coding team
+Description[fr]=Des sélecteurs CSS pour écrire du code HTML.
+Authors=Mike Crittenden <mike@mikethecoder.com>, Zen Coding team\nFranck Marcia <franck.marcia@gmail.com>
 Copyright=Mike Crittenden <mike@mikethecoder.com>
 Website=http://github.com/mikecrittenden/zen-coding-gedit
 

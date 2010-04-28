@@ -4,7 +4,7 @@
 # Connect Zen Coding to Gedit.
 #
 
-import gedit, gobject, string, gtk, re, core
+import gedit, gobject, string, gtk, re, zen_core
 
 class ZenCodingPlugin(gedit.Plugin):
     """A Gedit plugin to implement Zen Coding's HTML and CSS shorthand expander."""
@@ -18,15 +18,14 @@ class ZenCodingPlugin(gedit.Plugin):
         # Create the GTK action to be used to connect the key combo
         # to the Zen Coding expansion (i.e., the good stuff).
         complete_action = gtk.Action(name="ZenCodingAction",
-                                     label="Expand Zen code...",
+                                     label="Expand Zen code",
                                      tooltip="Expand Zen Code in document to raw HTML/CSS",
                                      stock_id=gtk.STOCK_GO_FORWARD)
 
         # Connect the newly created action with key combo
         complete_action.connect("activate",
                                 lambda a: self.expand_zencode(window))
-        action_group.add_action_with_accel(complete_action,
-                                           "<Ctrl><Shift>E")
+        action_group.add_action_with_accel(complete_action, "<Shift><Ctrl>E")
 
         ui_manager.insert_action_group(action_group, 0)
 
@@ -61,21 +60,39 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Grab the current line.
         line = self.get_line(buffer, cursor_iter)
-        before = self.get_shorthand(line)
-        if not before:
-            return
+
+        # Get shorthand from selection...
+        is_selection = False
+        if buffer.get_has_selection():
+            insert_iter = buffer.get_iter_at_mark(buffer.get_insert())
+            bound_iter = buffer.get_iter_at_mark(buffer.get_selection_bound())
+            before = buffer.get_text(bound_iter, insert_iter)
+            cursor_iter = (bound_iter if bound_iter.compare(insert_iter) == 1 else insert_iter).copy()
+            buffer.place_cursor(cursor_iter)
+            is_selection = True
+
+        # ... or from previous word
+        else:
+            before = self.get_shorthand(line)
+            if not before:
+                return
 
         # Generate expanded code from the shorthand code based on the document's language.
         lang = self.get_language(window)
-        after = core.expand_abbreviation(before, 'css' if lang == 'CSS' else 'html', 'xhtml')
+        if lang == 'CSS': lang = 'css'
+        elif lang == 'XSLT': lang = 'xsl'
+        else: lang = 'html'
+        after = zen_core.expand_abbreviation(before, lang, 'xhtml')
         if not after:
+            if is_selection:
+                buffer.select_range(insert_iter, bound_iter)
             return
 
         # Indent the expanded code according to editor's preferences.
         after = self.indent_code(line, after, window)
 
         # Replace the shorthand code with the expanded code.
-        if self.replace_with_expanded(cursor_iter, buffer, before, after):
+        if self.replace_with_expanded(cursor_iter, buffer, before, after, window.get_active_document()):
             statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Expanded shorthand code into the real stuff.')
         else:
             statusbar.push(statusbar.get_context_id('ZenCodingPlugin'), 'Code couldn\'t expand. Try checking your syntax for mistakes.')
@@ -97,7 +114,7 @@ class ZenCodingPlugin(gedit.Plugin):
 
         # Automatically indent the string and replace \t (tab) with the
         # correct number of spaces.
-        code = core.pad_string(code, re.match(r"\s*", line).group())
+        code = zen_core.pad_string(code, re.match(r"\s*", line).group())
         if editor.get_active_view().get_insert_spaces_instead_of_tabs():
             code = code.replace("\t", " " * editor.get_active_view().get_tab_width())
 
@@ -113,22 +130,16 @@ class ZenCodingPlugin(gedit.Plugin):
 
     def get_shorthand(self, line):
         """Grab the last word typed (i.e., the shorthand code)."""
+        return re.split('\s+', line)[-1]
 
-        # Find the last space in the line and remove it, setting a variable
-        # 'before' to the current line.
-        words = line.split(" ")
-        word = words[-1].lstrip()
-        if not word:
-            word = None
+    def replace_with_expanded(self, cursor_iter, buffer, before, after, document):
+        """Replace the shorthand code with the expanded code."""
 
-        return word
+        # Replace the original caret_placerholder with a nicer one
+        after = after.replace(zen_core.caret_placeholder, '[ ]')
 
-    def replace_with_expanded(self, cursor_iter, buffer, before, after):
-        """Replace the shorthand cod with the expanded code."""
-
-        # We are currently lame and do not know how to do placeholders.
-        # So remove all | characters from after.
-        after = after.replace("|", "")
+        # Save cursor's current location
+        offset = cursor_iter.get_offset()
 
         # Delete the last word in the line (i.e., the 'before' text, aka the
         # Zen un-expanded code), so that we can replace it.
@@ -139,5 +150,16 @@ class ZenCodingPlugin(gedit.Plugin):
         # Insert the new expanded text.
         buffer.insert_at_cursor(after)
 
-        return True
+        # Set parameters for search
+        end_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        buffer.place_cursor(buffer.get_iter_at_offset(offset - len(before)))
+        begin_iter = buffer.get_iter_at_mark(buffer.get_insert())
+        begin_match = begin_iter.copy()
+        end_match = end_iter.copy()
 
+        # Do search
+        document.set_search_text('[ ]', 0)
+        document.search_forward(begin_iter, end_iter, begin_match, end_match)
+        buffer.select_range(begin_match, end_match)
+
+        return True

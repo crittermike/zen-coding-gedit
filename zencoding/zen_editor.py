@@ -26,8 +26,7 @@ class ZenEditor():
 		<code>before</code> using any Zen Coding action.
 		@param context: context object
 		"""
-        view = window.get_active_view()
-        self.context = view.get_buffer()
+		pass
 
 	def get_selection_range(self):
 		"""
@@ -37,7 +36,7 @@ class ZenEditor():
 		start, end = zen_editor.get_selection_range();
 		print('%s, %s' % (start, end))
 		"""
-		pass
+		return 0, 0
 
 
 	def create_selection(self, start, end=None):

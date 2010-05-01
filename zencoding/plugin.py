@@ -6,11 +6,30 @@
 
 import gedit, gobject, string, gtk, re, zen_core
 
+zen_code_ui_str = """
+<ui>
+  <menubar name="MenuBar">
+    <menu name="EditMenu" action="Edit">
+      <placeholder name="EditOps_5">
+        <menuitem name="ZenExpand" action="ZenExpandAction"/>
+        <menuitem name="ZenWrap"   action="ZenWrapAction"/>
+      </placeholder>
+    </menu>
+  </menubar>
+</ui>
+"""
+
 class ZenCodingPlugin(gedit.Plugin):
     """A Gedit plugin to implement Zen Coding's HTML and CSS shorthand expander."""
 
     def activate(self, window):
         """Install the expansion feature upon activation."""
+
+        actions = [
+          ('ZenExpandAction', None, 'Expand Zen Code',       '<Ctrl>E',        "Expand Zen Code in document to raw HTML/CSS", self.remove_whitespace),
+          ('ZenWrapAction',   None, 'Wrap with Zen Code...', '<Ctrl><Shift>E', "Reduce Whitespace", self.reduce_whitespace)
+        ]
+
 
         ui_manager = window.get_ui_manager()
         action_group = gtk.ActionGroup("GeditZenCodingPluginActions")

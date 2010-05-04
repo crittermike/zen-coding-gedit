@@ -44,7 +44,7 @@ Installation
 Credits
 -------
 - [Sergey Chikuyonok](http://chikuyonok.ru/) - the music makers, the dreamers of the dream
-- [Mike Crittenden](http://mikethecoder.com) - the maintainer of the first Gedit plugin
+- [Mike Crittenden](http://mikethecoder.com) - the maintainer of the Gedit plugin
 - [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the original author of the Gedit plugin
 - [Mitchell Foral](http://caladbolg.net/) - the author of [gcocoadialog](http://code.google.com/p/gcocoadialog/)
 - Franck Marcia - the author of this version of Gedit plugin

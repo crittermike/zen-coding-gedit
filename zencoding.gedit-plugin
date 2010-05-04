@@ -3,9 +3,9 @@ Loader=python
 Module=zencoding
 IAge=2
 Name=Zen Coding
-Description=Expand CSS, HTML or XSLT code using CSS-like Zen Coding's abbreviations.
-Description[fr]=Ecrire du code CSS, HTML ou XSLT à partir d'abréviations Zen Coding.
-Authors=Franck Marcia <franck.marcia@gmail.com>
-Copyright=Franck Marcia <franck.marcia@gmail.com>
-Website=http://github.com/fmarcia/zen-coding-gedit
+Description=Enables Zen Coding's CSS and HTML shorthand tools for Gedit.
+Description[fr]=Des sélecteurs CSS pour écrire du code HTML.
+Authors=Mike Crittenden <mike@mikethecoder.com>, Zen Coding team\nFranck Marcia <franck.marcia@gmail.com>
+Copyright=Mike Crittenden <mike@mikethecoder.com>\nFranck Marcia <franck.marcia@gmail.com>
+Website=http://github.com/mikecrittenden/zen-coding-gedit
 

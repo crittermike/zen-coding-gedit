@@ -22,12 +22,14 @@ Zen Coding isn't only a decent abbreviations expander, but also a set of handy t
 Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully to boost your productivity even
 more. Note that almost every action highly depends on current caret position inside text editor. 
 
-Currently implemented for Gedit:
-
 - Expand abbreviation with `Ctrl+E`
 - Wrap with abbreviation with `Ctrl+Shift+E`
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
+- Merge lines with `Ctrl+Alt+M`
+- Remove tag with `Ctrl+Alt+R`
+- Split or join lines with `Ctrl+Alt+S`
+- Toggle comment with `Ctrl+Alt+C`
 
 Menu entries are also available in the Edit menu.
 Shortcuts can be changed in `~/.gnome2/gedit/plugins/zencoding/plugin.py` to fit your needs.

@@ -42,14 +42,7 @@ class ZenEditor():
             zen_core.set_variable('indentation', " " * context.get_active_view().get_tab_width())
         else:
             zen_core.set_variable('indentation', "\t")
-        #newline = self.document.get_property('newline-type')
-        #if newline == GeditDocumentNewlineType.GEDIT_DOCUMENT_NEWLINE_TYPE_CR:
-        #    newline = '\r'
-        #elif newline == GeditDocumentNewlineType.GEDIT_DOCUMENT_NEWLINE_TYPE_CR_LF:
-        #    newline = '\r\n'
-        #else:
-        #    newline = '\n'
-        #zen_core.set_newline(newline)
+        #zen_core.set_newline(???)
 
     def get_selection_range(self):
         """
@@ -59,8 +52,8 @@ class ZenEditor():
         start, end = zen_editor.get_selection_range();
         print('%s, %s' % (start, end))
         """
-        offset_start = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
-        offset_end = self.buffer.get_iter_at_mark(self.buffer.get_selection_bound()).get_offset()
+        offset_start = self.get_insert_offset()
+        offset_end = self.get_selection_bound_offset()
         if offset_start < offset_end:
             return offset_start, offset_end
         return offset_end, offset_start
@@ -94,15 +87,14 @@ class ZenEditor():
         start, end = zen_editor.get_current_line_range();
         print('%s, %s' % (start, end))
         """
-        iter_current = self.buffer.get_iter_at_mark(self.buffer.get_insert())
+        iter_current = self.get_insert_iter()
         offset_start = self.buffer.get_iter_at_line(iter_current.get_line()).get_offset()
         offset_end = offset_start + iter_current.get_chars_in_line() - 1
         return offset_start, offset_end
 
     def get_caret_pos(self):
         """ Returns current caret position """
-        iter_current = self.buffer.get_iter_at_mark(self.buffer.get_insert())
-        return iter_current.get_offset()
+        return self.get_insert_offset()
 
     def set_caret_pos(self, pos):
         """
@@ -146,7 +138,7 @@ class ZenEditor():
         """
         if offset_start is None and offset_end is None:
             iter_start = self.buffer.get_iter_at_offset(0)
-            iter_end = self.buffer.get_iter_at_offset(self.buffer.get_char_count())
+            iter_end = self.get_end_iter()
         elif offset_end is None:
             iter_start = self.buffer.get_iter_at_offset(offset_start)
             iter_end = self.buffer.get_iter_at_offset(offset_start)
@@ -155,13 +147,14 @@ class ZenEditor():
             iter_end = self.buffer.get_iter_at_offset(offset_end)
 
         self.buffer.delete(iter_start, iter_end)
-        self.insertion_start = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
+        self.insertion_start = self.get_insert_offset()
         
         padding = zen_actions.get_current_line_padding(self)
-        value = value.replace('\t', zen_core.get_variable('indentation')) #there's a bug when snippet contains literal indentation
+        # there's a bug when the snippet contains literal indentation
+        value = value.replace('\t', zen_core.get_variable('indentation'))
         self.buffer.insert_at_cursor(zen_core.pad_string(value, padding))
 
-        self.insertion_end = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
+        self.insertion_end = self.get_insert_offset()
 
     def get_content(self):
         """
@@ -169,7 +162,7 @@ class ZenEditor():
         @return: str
         """
         iter_start = self.buffer.get_iter_at_offset(0)
-        iter_end = self.buffer.get_iter_at_offset(self.buffer.get_char_count())
+        iter_end = self.get_end_iter()
         return self.buffer.get_text(iter_start, iter_end)
 
     def get_syntax(self):
@@ -191,13 +184,29 @@ class ZenEditor():
         """
         return 'xhtml'
 
+    def get_insert_iter(self):
+        return self.buffer.get_iter_at_mark(self.buffer.get_insert())
+        
+    def get_insert_offset(self):
+        return self.get_insert_iter().get_offset()
+
+    def get_selection_bound_offset(self):
+        return self.buffer.get_iter_at_mark(self.buffer.get_selection_bound()).get_offset()
+
+    def get_end_iter(self):
+        return self.buffer.get_iter_at_offset(self.buffer.get_char_count())
+
+    def get_end_offset(self):
+        return self.get_end_iter().get_offset()
+
     def prompt(self, abbr):
         """
         Prompt user with gCocoaDialog
         @param abbr: Previous abbreviation
         @return: str
         """
-        cmd = 'gcocoadialog inputbox --width 400 --title "Wrap text with Zen Coding" --informative-text "Abbreviation:" --text "{0}" --button1 "OK" --button2 "Cancel"'
+        cmd = 'gcocoadialog inputbox --width 400 --title "Wrap text with Zen Coding"'
+        cmd += ' --informative-text "Abbreviation:" --text "{0}" --button1 "gtk-ok" --button2 "gtk-cancel"'
         ok = False
         for line in os.popen(cmd.format(abbr)).readlines():
             line = line[:-1]
@@ -208,8 +217,9 @@ class ZenEditor():
         return None
 
     def start_edit(self):
-        if self.insertion_start == 0: #bug when the cursor is at the very beginning
-            self.insertion_start = 1
+        # bug when the cursor is at the very beginning
+        if self.insertion_start == 0:
+            self.insertion_start = 1        
         self.set_caret_pos(self.insertion_start)
         if not self.next_edit_point():
             self.set_caret_pos(self.insertion_end)
@@ -250,3 +260,4 @@ class ZenEditor():
         if window:
             self.set_context(window)
         return zen_actions.next_edit_point(self)
+

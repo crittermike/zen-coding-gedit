@@ -11,6 +11,7 @@ This layer describes all available Zen Coding actions, like
 from zencoding import zen_core as zen_coding
 from zencoding import html_matcher
 import re
+from zen_core import char_at
 
 def find_abbreviation(editor):
 	"""
@@ -251,12 +252,9 @@ def find_new_edit_point(editor, inc=1, offset=0):
 		
 	while cur_point < max_len and cur_point > 0:
 		cur_point += inc
-		try:
-			cur_char = content[cur_point]
-			next_char = content[cur_point + 1]
-			prev_char = content[cur_point - 1]
-		except:
-			break
+		cur_char = char_at(content, cur_point)
+		next_char = char_at(content, cur_point + 1)
+		prev_char = char_at(content, cur_point - 1)
 		
 		if cur_char in '"\'':
 			if next_char == cur_char and prev_char == '=':

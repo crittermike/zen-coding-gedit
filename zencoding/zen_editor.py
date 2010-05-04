@@ -261,3 +261,31 @@ class ZenEditor():
             self.set_context(window)
         return zen_actions.next_edit_point(self)
 
+    def merge_lines(self, window):
+        self.set_context(window)
+        self.buffer.begin_user_action()
+        result = zen_actions.merge_lines(self)
+        self.buffer.end_user_action()
+        return result
+
+    def remove_tag(self, window):
+        self.set_context(window)
+        self.buffer.begin_user_action()
+        result = zen_actions.remove_tag(self)
+        self.buffer.end_user_action()
+        return result
+
+    def split_join_tag(self, window):
+        self.set_context(window)
+        self.buffer.begin_user_action()
+        result = zen_actions.split_join_tag(self)
+        self.buffer.end_user_action()
+        return result
+
+    def toggle_comment(self, window):
+        self.set_context(window)
+        self.buffer.begin_user_action()
+        result = zen_actions.toggle_comment(self)
+        self.buffer.end_user_action()
+        return result
+

@@ -12,12 +12,21 @@ zencoding_ui_str = """
   <menubar name="MenuBar">
     <menu name="EditMenu" action="Edit">
       <placeholder name="EditOps_5">
-        <menuitem name="ZenCodingExpand"  action="ZenCodingExpandAction"/>
-        <menuitem name="ZenCodingWrap"    action="ZenCodingWrapAction"/>
-        <menuitem name="ZenCodingInward"  action="ZenCodingInwardAction"/>
-        <menuitem name="ZenCodingOutward" action="ZenCodingOutwardAction"/>
-        <menuitem name="ZenCodingPrev"    action="ZenCodingPrevAction"/>
-        <menuitem name="ZenCodingNext"    action="ZenCodingNextAction"/>
+        <menu action="ZenCodingMenuAction">
+          <menuitem name="ZenCodingExpand"  action="ZenCodingExpandAction"/>
+          <menuitem name="ZenCodingWrap"    action="ZenCodingWrapAction"/>
+          <separator/>
+          <menuitem name="ZenCodingInward"  action="ZenCodingInwardAction"/>
+          <menuitem name="ZenCodingOutward" action="ZenCodingOutwardAction"/>
+          <menuitem name="ZenCodingMerge"   action="ZenCodingMergeAction"/>
+          <separator/>
+          <menuitem name="ZenCodingPrev"    action="ZenCodingPrevAction"/>
+          <menuitem name="ZenCodingNext"    action="ZenCodingNextAction"/>
+          <separator/>
+          <menuitem name="ZenCodingRemove"  action="ZenCodingRemoveAction"/>
+          <menuitem name="ZenCodingSplit"   action="ZenCodingSplitAction"/>
+          <menuitem name="ZenCodingComment" action="ZenCodingCommentAction"/>
+        </menu>
       </placeholder>
     </menu>
   </menubar>
@@ -29,12 +38,17 @@ class ZenCodingPlugin(gedit.Plugin):
 
     def activate(self, window):
         actions = [
+          ('ZenCodingMenuAction',    None, 'Zen Coding',            None,            "Zen Coding framework",                                None),
           ('ZenCodingExpandAction',  None, 'Expand Zen Code',       '<Ctrl>E',        "Expand Zen code to raw HTML/CSS",                     self.expand_abbreviation),
           ('ZenCodingWrapAction',    None, 'Wrap with Zen Code...', '<Ctrl><Shift>E', "Wrap selection with HTML/CSS expanded from Zen code", self.wrap_with_abbreviation),
           ('ZenCodingInwardAction',  None, 'Balance tag inward',    '<Ctrl><Alt>I',   "Select inner tag's content",                          self.match_pair_inward),
           ('ZenCodingOutwardAction', None, 'Balance tag outward',   '<Ctrl><Alt>O',   "Select outer tag's content",                          self.match_pair_outward),
           ('ZenCodingPrevAction',    None, 'Previous edit point',   '<Alt>Left',      "Place the cursor at the previous edit point",         self.prev_edit_point),
-          ('ZenCodingNextAction',    None, 'Next edit point',       '<Alt>Right',     "Place the cursor at the next edit point",             self.next_edit_point)
+          ('ZenCodingNextAction',    None, 'Next edit point',       '<Alt>Right',     "Place the cursor at the next edit point",             self.next_edit_point),
+          ('ZenCodingMergeAction',   None, 'Merge lines',           '<Ctrl><Alt>M',   "Merge all lines of the current selection",            self.merge_lines),
+          ('ZenCodingRemoveAction',  None, 'Remove tag',            '<Ctrl><Alt>R',   "Remove a tag",                                        self.remove_tag),
+          ('ZenCodingSplitAction',   None, 'Split or join tag',     '<Ctrl><Alt>S',   "Toggle between single and double tag",                self.split_join_tag),
+          ('ZenCodingCommentAction', None, 'Toggle comment',        '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",                       self.toggle_comment)
         ]
         windowdata = dict()
         window.set_data("ZenCodingPluginDataKey", windowdata)
@@ -74,4 +88,16 @@ class ZenCodingPlugin(gedit.Plugin):
 
     def next_edit_point(self, action, window):
         self.editor.next_edit_point(window)
+
+    def merge_lines(self, action, window):
+        self.editor.merge_lines(window)
+
+    def remove_tag(self, action, window):
+        self.editor.remove_tag(window)
+
+    def split_join_tag(self, action, window):
+        self.editor.split_join_tag(window)
+
+    def toggle_comment(self, action, window):
+        self.editor.toggle_comment(window)
 

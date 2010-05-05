@@ -23,11 +23,11 @@ Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully to 
 more. Note that almost every action highly depends on current caret position inside text editor. 
 
 - Expand abbreviation with `Ctrl+E`
-- Wrap with abbreviation with `Ctrl+Shift+E`
+- Wrap with abbreviation with `Ctrl+Shift+E` (needs gcocoadialog, see Installation and Credits)
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Merge lines with `Ctrl+Alt+M`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
-- Update image size with `Ctrl+Alt+S`
+- Update tag image size with `Ctrl+Alt+S` (needs ImageMagick, see Installation and Credits)
 - Remove tag with `Ctrl+Alt+R`
 - Split or join lines with `Ctrl+Alt+J`
 - Toggle comment with `Ctrl+Alt+C`
@@ -40,9 +40,10 @@ Installation
 
 1. Download source
 2. Unpack the `zencoding-gedit.plugin` file and the `zencoding` directory into `~/.gnome2/gedit/plugins/`.
-3. Unpack the `gcocoadialog` file into `/usr/bin/` (compiled for Ubuntu amd64, make sure to `chmod +x` it) or compile it yourself from [here](http://code.google.com/p/gcocoadialog/).
-4. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
-5. Try it out!
+3. In order to use "Wrap with abbreviation", unpack the `gcocoadialog` file into `/usr/bin/` (compiled for Ubuntu amd64, make sure to `chmod +x` it) or compile it yourself from [here](http://code.google.com/p/gcocoadialog/).
+4. In order to o use "Update tag image size", install the package `imagemagick` if not already done.
+5. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
+6. Try it out!
 
 Credits
 -------
@@ -50,4 +51,5 @@ Credits
 - [Mike Crittenden](http://mikethecoder.com) - the maintainer of the Gedit plugin
 - [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the original author of the Gedit plugin
 - [Mitchell Foral](http://caladbolg.net/) - the author of [gcocoadialog](http://code.google.com/p/gcocoadialog/)
+- [ImageMagick Team](http://www.imagemagick.org/) - a software suite to create, edit, and compose bitmap images
 - Franck Marcia - the author of this version of Gedit plugin

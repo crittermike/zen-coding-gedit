@@ -41,7 +41,7 @@ Installation
 1. Download source
 2. Unpack the `zencoding-gedit.plugin` file and the `zencoding` directory into `~/.gnome2/gedit/plugins/`.
 3. In order to use "Wrap with abbreviation", unpack the `gcocoadialog` file into `/usr/bin/` (compiled for Ubuntu amd64, make sure to `chmod +x` it) or compile it yourself from [here](http://code.google.com/p/gcocoadialog/).
-4. In order to o use "Update tag image size", install the package `imagemagick` if not already done.
+4. In order to use "Update tag image size", install the package `imagemagick`, if not already done.
 5. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
 6. Try it out!
 

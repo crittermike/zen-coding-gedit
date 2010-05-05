@@ -13,7 +13,7 @@ expand expressions—similar to CSS selectors—into HTML code.
 - [Demo video](http://vimeo.com/7405114)
 - [Examples and usage](http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/)
 
-This is a Gedit plugin that partially integrates Zen Coding into Gedit.
+This is a Gedit plugin that fully integrates Zen Coding into Gedit.
 
 Features
 --------
@@ -52,4 +52,4 @@ Credits
 - [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the original author of the Gedit plugin
 - [Mitchell Foral](http://caladbolg.net/) - the author of [gcocoadialog](http://code.google.com/p/gcocoadialog/)
 - [ImageMagick Team](http://www.imagemagick.org/) - a software suite to create, edit, and compose bitmap images
-- Franck Marcia - the author of this version of Gedit plugin
+- [Franck Marcia](http://github.com/fmarcia) - the author of this version of the Gedit plugin

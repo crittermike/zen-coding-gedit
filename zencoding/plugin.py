@@ -23,6 +23,8 @@ zencoding_ui_str = """
           <menuitem name="ZenCodingPrev"    action="ZenCodingPrevAction"/>
           <menuitem name="ZenCodingNext"    action="ZenCodingNextAction"/>
           <separator/>
+          <menuitem name="ZenCodingSize"    action="ZenCodingSizeAction"/>
+          <separator/>
           <menuitem name="ZenCodingRemove"  action="ZenCodingRemoveAction"/>
           <menuitem name="ZenCodingSplit"   action="ZenCodingSplitAction"/>
           <menuitem name="ZenCodingComment" action="ZenCodingCommentAction"/>
@@ -43,11 +45,12 @@ class ZenCodingPlugin(gedit.Plugin):
           ('ZenCodingWrapAction',    None, 'Wrap with Zen Code...', '<Ctrl><Shift>E', "Wrap selection with HTML/CSS expanded from Zen code", self.wrap_with_abbreviation),
           ('ZenCodingInwardAction',  None, 'Balance tag inward',    '<Ctrl><Alt>I',   "Select inner tag's content",                          self.match_pair_inward),
           ('ZenCodingOutwardAction', None, 'Balance tag outward',   '<Ctrl><Alt>O',   "Select outer tag's content",                          self.match_pair_outward),
+          ('ZenCodingMergeAction',   None, 'Merge lines',           '<Ctrl><Alt>M',   "Merge all lines of the current selection",            self.merge_lines),
           ('ZenCodingPrevAction',    None, 'Previous edit point',   '<Alt>Left',      "Place the cursor at the previous edit point",         self.prev_edit_point),
           ('ZenCodingNextAction',    None, 'Next edit point',       '<Alt>Right',     "Place the cursor at the next edit point",             self.next_edit_point),
-          ('ZenCodingMergeAction',   None, 'Merge lines',           '<Ctrl><Alt>M',   "Merge all lines of the current selection",            self.merge_lines),
+          ('ZenCodingSizeAction',    None, 'Update image size',     '<Ctrl><Alt>S',   "Update image size tag from file",                     self.update_image_size),
           ('ZenCodingRemoveAction',  None, 'Remove tag',            '<Ctrl><Alt>R',   "Remove a tag",                                        self.remove_tag),
-          ('ZenCodingSplitAction',   None, 'Split or join tag',     '<Ctrl><Alt>S',   "Toggle between single and double tag",                self.split_join_tag),
+          ('ZenCodingSplitAction',   None, 'Split or join tag',     '<Ctrl><Alt>J',   "Toggle between single and double tag",                self.split_join_tag),
           ('ZenCodingCommentAction', None, 'Toggle comment',        '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",                       self.toggle_comment)
         ]
         windowdata = dict()
@@ -71,11 +74,11 @@ class ZenCodingPlugin(gedit.Plugin):
         windowdata = window.get_data("ZenCodingPluginDataKey")
         windowdata["action_group"].set_sensitive(bool(view and view.get_editable()))
 
-    def wrap_with_abbreviation(self, action, window):
-        self.editor.wrap_with_abbreviation(window)
-
     def expand_abbreviation(self, action, window):
         self.editor.expand_abbreviation(window)
+
+    def wrap_with_abbreviation(self, action, window):
+        self.editor.wrap_with_abbreviation(window)
 
     def match_pair_inward(self, action, window):
         self.editor.match_pair_inward(window)
@@ -83,14 +86,17 @@ class ZenCodingPlugin(gedit.Plugin):
     def match_pair_outward(self, action, window):
         self.editor.match_pair_outward(window)
 
+    def merge_lines(self, action, window):
+        self.editor.merge_lines(window)
+
     def prev_edit_point(self, action, window):
         self.editor.prev_edit_point(window)
 
     def next_edit_point(self, action, window):
         self.editor.next_edit_point(window)
 
-    def merge_lines(self, action, window):
-        self.editor.merge_lines(window)
+    def update_image_size(self, action, window):
+        self.editor.update_image_size(window)
 
     def remove_tag(self, action, window):
         self.editor.remove_tag(window)

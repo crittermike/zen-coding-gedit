@@ -22,6 +22,7 @@ Gedit implementation
 
 import zen_core, zen_actions
 import os, re
+from image_size import update_image_size
 
 class ZenEditor():
 
@@ -251,6 +252,13 @@ class ZenEditor():
         self.set_context(window)
         zen_actions.match_pair_outward(self)
 
+    def merge_lines(self, window):
+        self.set_context(window)
+        self.buffer.begin_user_action()
+        result = zen_actions.merge_lines(self)
+        self.buffer.end_user_action()
+        return result
+
     def prev_edit_point(self, window=None):
         if window:
             self.set_context(window)
@@ -261,12 +269,11 @@ class ZenEditor():
             self.set_context(window)
         return zen_actions.next_edit_point(self)
 
-    def merge_lines(self, window):
+    def update_image_size(self, window):
         self.set_context(window)
         self.buffer.begin_user_action()
-        result = zen_actions.merge_lines(self)
+        update_image_size(self)
         self.buffer.end_user_action()
-        return result
 
     def remove_tag(self, window):
         self.set_context(window)

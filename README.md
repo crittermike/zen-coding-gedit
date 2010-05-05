@@ -29,7 +29,7 @@ more. Note that almost every action highly depends on current caret position ins
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
 - Update tag image size with `Ctrl+Alt+S` (needs ImageMagick, see Installation and Credits)
 - Remove tag with `Ctrl+Alt+R`
-- Split or join lines with `Ctrl+Alt+J`
+- Split or join tags with `Ctrl+Alt+J`
 - Toggle comment with `Ctrl+Alt+C`
 
 Menu entries are also available in the Edit menu.

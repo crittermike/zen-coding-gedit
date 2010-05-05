@@ -38,8 +38,9 @@ class ZenEditor():
         """
         self.context = context
         self.buffer = self.context.get_active_view().get_buffer()
+        self.view = context.get_active_view()
         self.document = context.get_active_document()
-        if context.get_active_view().get_insert_spaces_instead_of_tabs():
+        if self.view.get_insert_spaces_instead_of_tabs():
             zen_core.set_variable('indentation', " " * context.get_active_view().get_tab_width())
         else:
             zen_core.set_variable('indentation', "\t")
@@ -224,6 +225,9 @@ class ZenEditor():
         self.set_caret_pos(self.insertion_start)
         if not self.next_edit_point():
             self.set_caret_pos(self.insertion_end)
+    
+    def show_caret(self):
+        self.view.scroll_mark_onscreen(self.buffer.get_insert())
 
     def expand_abbreviation(self, window):
         self.set_context(window)
@@ -262,12 +266,16 @@ class ZenEditor():
     def prev_edit_point(self, window=None):
         if window:
             self.set_context(window)
-        return zen_actions.prev_edit_point(self)
+        result = zen_actions.prev_edit_point(self)
+        self.show_caret()
+        return result
 
     def next_edit_point(self, window=None):
         if window:
             self.set_context(window)
-        return zen_actions.next_edit_point(self)
+        result = zen_actions.next_edit_point(self)
+        self.show_caret()
+        return result
 
     def update_image_size(self, window):
         self.set_context(window)

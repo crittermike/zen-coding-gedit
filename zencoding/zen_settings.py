@@ -727,3 +727,17 @@ zen_settings = {
 		'extends': 'html'
 	}
 }
+
+# merge standard settings with user settings
+try:
+	from my_zen_settings import my_zen_settings
+except:
+	pass
+else:
+	for lang in zen_settings:
+		if lang in my_zen_settings:
+			if 'snippets' in zen_settings[lang] and 'snippets' in my_zen_settings[lang]:
+				zen_settings[lang]['snippets'].update(my_zen_settings[lang]['snippets'])
+			if 'abbreviations' in zen_settings[lang] and 'abbreviations' in my_zen_settings[lang]:
+				zen_settings[lang]['abbreviations'].update(my_zen_settings[lang]['abbreviations'])
+

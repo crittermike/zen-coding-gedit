@@ -19,8 +19,8 @@ Features
 --------
 
 Zen Coding isn't only a decent abbreviations expander, but also a set of handy tools for common XHTML tasks.
-Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully to boost your productivity even
-more. Note that almost every action highly depends on current caret position inside text editor. 
+Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully for details and boost your productivity
+even more. Note that almost every action highly depends on current caret position inside text editor. 
 
 - Expand abbreviation with `Ctrl+E`
 - Wrap with abbreviation with `Ctrl+Shift+E` (needs gcocoadialog, see Installation and Credits)
@@ -33,7 +33,10 @@ more. Note that almost every action highly depends on current caret position ins
 - Toggle comment with `Ctrl+Alt+C`
 
 Menu entries are also available in the Edit menu.
+
 Shortcuts can be changed in `~/.gnome2/gedit/plugins/zencoding/plugin.py` to fit your needs.
+
+Besides, you can write your own abbreviations and snippets.
 
 Installation
 ------------

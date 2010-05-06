@@ -21,7 +21,7 @@ Gedit implementation
 '''
 
 import zen_core, zen_actions
-import os, re
+import os, re, locale
 from image_size import update_image_size
 
 class ZenEditor():
@@ -36,14 +36,27 @@ class ZenEditor():
         <code>before</code> using any Zen Coding action.
         @param context: context object
         """
-        self.context = context
+        self.context = context # window
         self.buffer = self.context.get_active_view().get_buffer()
         self.view = context.get_active_view()
         self.document = context.get_active_document()
+        
+        default_locale = locale.getdefaultlocale()[0]
+        lang = re.sub(r'_[^_]+$', '', default_locale)
+        if lang != default_locale:
+            zen_core.set_variable('lang', lang)
+            zen_core.set_variable('locale', default_locale.replace('_', '-'))
+        else:
+            zen_core.set_variable('lang', default_locale)
+            zen_core.set_variable('locale', default_locale)
+        
+        zen_core.set_variable('charset', self.document.get_encoding().get_charset())
+        
         if self.view.get_insert_spaces_instead_of_tabs():
             zen_core.set_variable('indentation', " " * context.get_active_view().get_tab_width())
         else:
             zen_core.set_variable('indentation', "\t")
+        
         #zen_core.set_newline(???)
 
     def get_selection_range(self):

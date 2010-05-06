@@ -2,6 +2,8 @@
 #
 # Connect Zen Coding to Gedit.
 #
+# Author Franck Marcia (franck.marcia@gmail.com)
+#
 
 import gedit, gobject, gtk, os
 

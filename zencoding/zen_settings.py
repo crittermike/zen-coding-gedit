@@ -731,8 +731,13 @@ zen_settings = {
 # merge standard settings with user settings
 try:
 	from my_zen_settings import my_zen_settings
-except:
-	pass
+except Exception as error:
+	zen_settings['variables']['user_settings_error'] = {
+	    'msg': error.msg,
+	    'lineno': error.lineno,
+	    'offset': error.offset,
+	    'text': error.text.replace(r'"', r'\"')
+	}
 else:
 	for lang in zen_settings:
 		if lang in my_zen_settings:

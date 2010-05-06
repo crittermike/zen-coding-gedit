@@ -67,6 +67,12 @@ class ZenCodingPlugin(gedit.Plugin):
         windowdata["ui_id"] = manager.add_ui_from_string(zencoding_ui_str)
         window.set_data("ZenCodingPluginInfo", windowdata)
         self.editor = ZenEditor()
+        error = self.editor.get_user_settings_error()
+        if error:
+            cmd = 'gcocoadialog ok-msgbox --width 400 --title "User settings error"'
+            cmd += ' --text "There is an error in user settings:"'
+            cmd += ' --informative-text "{0} on line {1} at character {2}\n{3}" --no-cancel'
+            os.popen(cmd.format(error['msg'], error['lineno'], error['offset'], error['text']))
 
     def deactivate(self, window):
         windowdata = window.get_data("ZenCodingPluginDataKey")

@@ -240,6 +240,9 @@ class ZenEditor():
     
     def show_caret(self):
         self.view.scroll_mark_onscreen(self.buffer.get_insert())
+        
+    def get_user_settings_error(self):
+        return zen_core.get_variable('user_settings_error')
 
     def expand_abbreviation(self, window):
         self.set_context(window)

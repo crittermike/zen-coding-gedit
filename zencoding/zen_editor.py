@@ -50,7 +50,8 @@ class ZenEditor():
             zen_core.set_variable('lang', default_locale)
             zen_core.set_variable('locale', default_locale)
         
-        zen_core.set_variable('charset', self.document.get_encoding().get_charset())
+        self.encoding = self.document.get_encoding().get_charset()
+        zen_core.set_variable('charset', self.encoding)
         
         if self.view.get_insert_spaces_instead_of_tabs():
             zen_core.set_variable('indentation', " " * context.get_active_view().get_tab_width())
@@ -126,7 +127,7 @@ class ZenEditor():
         offset_start, offset_end = self.get_current_line_range()
         iter_start = self.buffer.get_iter_at_offset(offset_start)
         iter_end = self.buffer.get_iter_at_offset(offset_end)
-        return self.buffer.get_text(iter_start, iter_end)
+        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
 
     def replace_content(self, value, offset_start=None, offset_end=None):
         """
@@ -176,7 +177,7 @@ class ZenEditor():
         """
         iter_start = self.buffer.get_iter_at_offset(0)
         iter_end = self.get_end_iter()
-        return self.buffer.get_text(iter_start, iter_end)
+        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
 
     def get_syntax(self):
         """

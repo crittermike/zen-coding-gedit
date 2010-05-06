@@ -165,8 +165,6 @@ class ZenEditor():
         self.insertion_start = self.get_insert_offset()
         
         padding = zen_actions.get_current_line_padding(self)
-        # there's a bug when the snippet contains literal indentation
-        value = value.replace('\t', zen_core.get_variable('indentation'))
         self.buffer.insert_at_cursor(zen_core.pad_string(value, padding))
 
         self.insertion_end = self.get_insert_offset()

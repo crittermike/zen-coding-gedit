@@ -23,6 +23,7 @@ Gedit implementation
 import zen_core, zen_actions
 import os, re, locale
 from image_size import update_image_size
+import wrap_dialog
 
 class ZenEditor():
 
@@ -204,32 +205,18 @@ class ZenEditor():
     def get_insert_offset(self):
         return self.get_insert_iter().get_offset()
 
+    def get_selection_bound_iter(self):
+        return self.buffer.get_iter_at_mark(self.buffer.get_selection_bound())
+
     def get_selection_bound_offset(self):
-        return self.buffer.get_iter_at_mark(self.buffer.get_selection_bound()).get_offset()
+        return self.get_selection_bound_iter().get_offset()
 
     def get_end_iter(self):
         return self.buffer.get_iter_at_offset(self.buffer.get_char_count())
 
     def get_end_offset(self):
         return self.get_end_iter().get_offset()
-
-    def prompt(self, abbr):
-        """
-        Prompt user with gCocoaDialog
-        @param abbr: Previous abbreviation
-        @return: str
-        """
-        cmd = 'gcocoadialog inputbox --width 400 --title "Wrap text with Zen Coding"'
-        cmd += ' --informative-text "Abbreviation:" --text "{0}" --button1 "gtk-ok" --button2 "gtk-cancel"'
-        ok = False
-        for line in os.popen(cmd.format(abbr)).readlines():
-            line = line[:-1]
-            if line == "1":
-                ok = True
-            elif ok and len(line) > 0:
-                return line
-        return None
-
+        
     def start_edit(self):
         # bug when the cursor is at the very beginning
         if self.insertion_start == 0:
@@ -252,16 +239,30 @@ class ZenEditor():
             self.start_edit()
         self.buffer.end_user_action()
 
+    def save_selection(self):
+        self.save_offset_insert = self.get_insert_offset()
+        self.save_offset_selection_bound = self.get_selection_bound_offset()
+    
+    def restore_selection(self):
+        iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
+        iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)
+        self.buffer.select_range(iter_insert, iter_selection_bound)
+
+    def do_wrap_with_abbreviation(self, done, abbr):
+        self.buffer.begin_user_action()
+        if done:
+            self.buffer.undo()
+            self.restore_selection()
+        result = zen_actions.wrap_with_abbreviation(self, abbr)
+        self.buffer.end_user_action()
+        return result
+
     def wrap_with_abbreviation(self, window):
         self.set_context(window)
-        abbr = self.prompt(self.last_wrap)
-        if abbr:
-            self.last_wrap = abbr.replace(r'$', r'\$')
-            self.buffer.begin_user_action()
-            result = zen_actions.wrap_with_abbreviation(self, abbr.replace(r'\$', r'$'))
-            if result:
-                self.start_edit()
-            self.buffer.end_user_action()
+        self.save_selection()
+        done, self.last_wrap = wrap_dialog.main(self, window, self.last_wrap)
+        if done:
+            self.start_edit()
 
     def match_pair_inward(self, window):
         self.set_context(window)

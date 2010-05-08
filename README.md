@@ -41,7 +41,7 @@ Besides, you can write your own abbreviations and snippets.
 Installation
 ------------
 
-1. [Download source](http://github.com/fmarcia/zen-coding-gedit/archives/master) and unpack it
+1. Download [zip](http://github.com/fmarcia/zen-coding-gedit/zipball/master) or [tar](http://github.com/fmarcia/zen-coding-gedit/tarball/master) source and unpack it
 2. Run `./install.sh`
 3. In order to use "Update tag image size", install `imagemagick` using your distribution's package manager.
 4. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.

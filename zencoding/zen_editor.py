@@ -23,12 +23,13 @@ Gedit implementation
 import zen_core, zen_actions
 import os, re, locale
 from image_size import update_image_size
-import wrap_dialog
+import wrap_dialog, expand_dialog
 
 class ZenEditor():
 
     def __init__(self):
         self.last_wrap = ''
+        self.last_expand = ''
         zen_core.set_caret_placeholder('')
 
     def set_context(self, context):
@@ -238,6 +239,28 @@ class ZenEditor():
         if result:
             self.start_edit()
         self.buffer.end_user_action()
+        
+    #---------------------------------------------------------------------------------------
+
+    def do_expand_with_abbreviation(self, done, abbr):
+        self.buffer.begin_user_action()
+        if done:
+            self.buffer.undo()
+            self.restore_selection()
+        content = zen_core.expand_abbreviation(abbr, self.get_syntax(), self.get_profile_name())
+        if content:
+            self.replace_content(content, self.get_insert_offset())
+        self.buffer.end_user_action()
+        return not not content
+
+    def expand_with_abbreviation(self, window):
+        self.set_context(window)
+        self.save_selection()
+        done, self.last_expand = expand_dialog.main(self, window, self.last_expand)
+        if done:
+            self.start_edit()
+
+    #---------------------------------------------------------------------------------------
 
     def save_selection(self):
         self.save_offset_insert = self.get_insert_offset()

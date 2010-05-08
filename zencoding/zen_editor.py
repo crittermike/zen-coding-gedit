@@ -220,14 +220,14 @@ class ZenEditor():
     def start_edit(self):
         # bug when the cursor is at the very beginning
         if self.insertion_start == 0:
-            self.insertion_start = 1        
+            self.insertion_start = 1
         self.set_caret_pos(self.insertion_start)
-        if not self.next_edit_point():
+        if not self.next_edit_point() or (self.get_insert_offset() > self.insertion_end):
             self.set_caret_pos(self.insertion_end)
     
     def show_caret(self):
         self.view.scroll_mark_onscreen(self.buffer.get_insert())
-        
+
     def get_user_settings_error(self):
         return zen_core.get_variable('user_settings_error')
 
@@ -242,7 +242,7 @@ class ZenEditor():
     def save_selection(self):
         self.save_offset_insert = self.get_insert_offset()
         self.save_offset_selection_bound = self.get_selection_bound_offset()
-    
+
     def restore_selection(self):
         iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
         iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)

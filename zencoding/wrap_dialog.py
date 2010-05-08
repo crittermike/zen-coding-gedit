@@ -69,6 +69,9 @@ class WrapDialog():
 
 def main(editor, window, text=""):
 
+    # ensure the caret is hidden
+    editor.view.set_cursor_visible(False)
+    
     # get coordinates of the cursor
     offset_start, offset_end = editor.get_selection_range()
     insert = editor.buffer.get_iter_at_offset(offset_start)
@@ -80,6 +83,9 @@ def main(editor, window, text=""):
     # open dialog at coordinates with eventual text
     wrap_dialog = WrapDialog(editor, xo + xb, yo + yb, text)
     wrap_dialog.main()
+
+    # show the caret again
+    editor.view.set_cursor_visible(True)
 
     # return exit status and abbreviation
     return wrap_dialog.done and wrap_dialog.exit, wrap_dialog.abbreviation

@@ -41,8 +41,8 @@ Besides, you can write your own abbreviations and snippets.
 Installation
 ------------
 
-1. Download source.
-2. Unpack the `zencoding-gedit.plugin` file and the `zencoding` directory into `~/.gnome2/gedit/plugins/`.
+1. [Download source](http://github.com/fmarcia/zen-coding-gedit/archives/master) and unpack it
+2. Run `./install.sh`
 3. In order to use "Update tag image size", install `imagemagick` using your distribution's package manager.
 4. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
 5. Try it out!

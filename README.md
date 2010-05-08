@@ -23,7 +23,7 @@ Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully for
 even more. Note that almost every action highly depends on current caret position inside text editor. 
 
 - Expand abbreviation with `Ctrl+E`
-- Wrap with abbreviation with `Ctrl+Shift+E` (needs gcocoadialog, see Installation and Credits)
+- Wrap with abbreviation with `Ctrl+Shift+E`
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Merge lines with `Ctrl+Alt+M`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
@@ -41,18 +41,17 @@ Besides, you can write your own abbreviations and snippets.
 Installation
 ------------
 
-1. Download source
+1. Download source.
 2. Unpack the `zencoding-gedit.plugin` file and the `zencoding` directory into `~/.gnome2/gedit/plugins/`.
-3. In order to use "Wrap with abbreviation", install `gcocoadialog` using [these instructions](http://mikethecoder.com/2010/05/05/compiling-and-installing-gcocoadialog-in-ubuntu/).
-4. In order to use "Update tag image size", install `imagemagick` using your distribution's package manager.
-5. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
-6. Try it out!
+3. In order to use "Update tag image size", install `imagemagick` using your distribution's package manager.
+4. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
+5. Try it out!
 
 Credits
 -------
 - [Sergey Chikuyonok](http://chikuyonok.ru/) - the music makers, the dreamers of the dream
 - [Mike Crittenden](http://mikethecoder.com) - the maintainer of the Gedit plugin
-- [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the original author of the Gedit plugin
-- [Mitchell Foral](http://caladbolg.net/) - the author of [gcocoadialog](http://code.google.com/p/gcocoadialog/)
-- [ImageMagick Team](http://www.imagemagick.org/) - a software suite to create, edit, and compose bitmap images
-- [Franck Marcia](http://github.com/fmarcia) - the author of this version of the Gedit plugin
+- [Franck Marcia](http://github.com/fmarcia) - the author of the Gedit plugin
+- [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the author of the original Gedit plugin
+- [ImageMagick](http://www.imagemagick.org/) - a software suite to create, edit, and compose bitmap images
+

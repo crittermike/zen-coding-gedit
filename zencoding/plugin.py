@@ -31,8 +31,6 @@ zencoding_ui_str = """
           <menuitem name="ZenCodingRemove"   action="ZenCodingRemoveAction"/>
           <menuitem name="ZenCodingSplit"    action="ZenCodingSplitAction"/>
           <menuitem name="ZenCodingComment"  action="ZenCodingCommentAction"/>
-          <separator/>
-          <menuitem name="ZenCodingSettings" action="ZenCodingSettingsAction"/>
         </menu>
       </placeholder>
     </menu>
@@ -57,8 +55,7 @@ class ZenCodingPlugin(gedit.Plugin):
           ('ZenCodingSizeAction',     None, 'Update image _size',           '<Ctrl><Alt>S',   "Update image size tag from file",             self.update_image_size),
           ('ZenCodingRemoveAction',   None, '_Remove tag',                  '<Ctrl><Alt>R',   "Remove a tag",                                self.remove_tag),
           ('ZenCodingSplitAction',    None, 'Split or _join tag',           '<Ctrl><Alt>J',   "Toggle between single and double tag",        self.split_join_tag),
-          ('ZenCodingCommentAction',  None, 'Toggle _comment',              '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",               self.toggle_comment),
-          ('ZenCodingSettingsAction', None, 'E_dit settings...',            None,            "Customize snippets and abbreviations",        self.edit_settings)
+          ('ZenCodingCommentAction',  None, 'Toggle _comment',              '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",               self.toggle_comment)
         ]
         windowdata = dict()
         window.set_data("ZenCodingPluginDataKey", windowdata)
@@ -126,6 +123,3 @@ class ZenCodingPlugin(gedit.Plugin):
 
     def toggle_comment(self, action, window):
         self.editor.toggle_comment(window)
-
-    def edit_settings(self, action, window):
-        window.create_tab_from_uri("file:///" + os.path.expanduser("~/.gnome2/gedit/plugins/zencoding/my_zen_settings.py"), None, 0, True, True)

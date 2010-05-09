@@ -1,6 +1,6 @@
 Zen Coding for Gedit
 ====================
-A new way of writing HTML and CSS code for Gedit.
+A new way of writing HTML and CSS code for Gedit
 
 Information
 -----------
@@ -13,43 +13,42 @@ expand expressions—similar to CSS selectors—into HTML code.
 - [Demo video](http://vimeo.com/7405114)
 - [Examples and usage](http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/)
 
-This is a Gedit plugin that partially integrates Zen Coding into Gedit.
+This plugin fully integrates Zen Coding into Gedit.
 
 Features
 --------
 
-Zen Coding isn't only a decent abbreviations expander, but also a set of handy tools for common XHTML tasks.
-Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) carefully to boost your productivity even
-more. Note that almost every action highly depends on current caret position inside text editor. 
+Zen Coding isn't only a decent abbreviations expander but also a set of handy tools for common XHTML tasks.
+Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) thoroughly for details.
+Note that almost every action highly depends on current caret position inside text editor.
+
+With this plugin, you can:
 
 - Expand abbreviation with `Ctrl+E`
-- Wrap with abbreviation with `Ctrl+Shift+E` (needs gcocoadialog, see Installation and Credits)
+- Expand with abbreviation with `Ctrl+Alt+E`
+- Wrap with abbreviation with `Ctrl+Shift+E`
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Merge lines with `Ctrl+Alt+M`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
-- Update tag image size with `Ctrl+Alt+S` (needs ImageMagick, see Installation and Credits)
+- Update tag image size with `Ctrl+Alt+S`
 - Remove tag with `Ctrl+Alt+R`
-- Split or join lines with `Ctrl+Alt+J`
+- Split or join tags with `Ctrl+Alt+J`
 - Toggle comment with `Ctrl+Alt+C`
+- Create your own abbreviations and snippets.
 
-Menu entries are also available in the Edit menu.
 Shortcuts can be changed in `~/.gnome2/gedit/plugins/zencoding/plugin.py` to fit your needs.
 
 Installation
 ------------
 
-1. Download source
-2. Unpack the `zencoding-gedit.plugin` file and the `zencoding` directory into `~/.gnome2/gedit/plugins/`.
-3. In order to use "Wrap with abbreviation", install `gcocoadialog` using [these instructions](http://mikethecoder.com/2010/05/05/compiling-and-installing-gcocoadialog-in-ubuntu/).
-4. In order to use "Update tag image size", install `imagemagick` using your distribution's package manager.
-5. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
-6. Try it out!
-
+1. Download [zip](http://github.com/mikecrittenden/zen-coding-gedit/zipball/master) or [tar](http://github.com/mikecrittenden/zen-coding-gedit/tarball/master) source and unpack it.
+2. Run `./install.sh`
+3. In order to use "Update tag image size", install `imagemagick` if not already installed
+4. In Gedit, go to Edit -> Preferences -> Plugins to find and enable the plugin.
+5. Try it out!
+ 
 Credits
 -------
-- [Sergey Chikuyonok](http://chikuyonok.ru/) - the music makers, the dreamers of the dream
-- [Mike Crittenden](http://mikethecoder.com) - the maintainer of the Gedit plugin
-- [Stuart Langridge](http://www.kryogenix.org/days/2009/09/21/zen-coding-for-gedit) - the original author of the Gedit plugin
-- [Mitchell Foral](http://caladbolg.net/) - the author of [gcocoadialog](http://code.google.com/p/gcocoadialog/)
-- [ImageMagick Team](http://www.imagemagick.org/) - a software suite to create, edit, and compose bitmap images
-- Franck Marcia - the author of this version of Gedit plugin
+- [Sergey Chikuyonok](http://chikuyonok.ru/) - the creator of Zen Coding
+- [Franck Marcia](http://github.com/fmarcia) - the author of this Gedit plugin
+- [Mike Crittenden](http://mikethecoder.com) - the maintainer of this Gedit plugin

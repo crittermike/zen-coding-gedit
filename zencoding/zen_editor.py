@@ -21,13 +21,15 @@ Gedit implementation
 '''
 
 import zen_core, zen_actions
-import os, re
+import os, re, locale
 from image_size import update_image_size
+import zen_dialog
 
 class ZenEditor():
 
     def __init__(self):
         self.last_wrap = ''
+        self.last_expand = ''
         zen_core.set_caret_placeholder('')
 
     def set_context(self, context):
@@ -36,13 +38,28 @@ class ZenEditor():
         <code>before</code> using any Zen Coding action.
         @param context: context object
         """
-        self.context = context
+        self.context = context # window
         self.buffer = self.context.get_active_view().get_buffer()
+        self.view = context.get_active_view()
         self.document = context.get_active_document()
-        if context.get_active_view().get_insert_spaces_instead_of_tabs():
+        
+        default_locale = locale.getdefaultlocale()[0]
+        lang = re.sub(r'_[^_]+$', '', default_locale)
+        if lang != default_locale:
+            zen_core.set_variable('lang', lang)
+            zen_core.set_variable('locale', default_locale.replace('_', '-'))
+        else:
+            zen_core.set_variable('lang', default_locale)
+            zen_core.set_variable('locale', default_locale)
+        
+        self.encoding = self.document.get_encoding().get_charset()
+        zen_core.set_variable('charset', self.encoding)
+        
+        if self.view.get_insert_spaces_instead_of_tabs():
             zen_core.set_variable('indentation', " " * context.get_active_view().get_tab_width())
         else:
             zen_core.set_variable('indentation', "\t")
+        
         #zen_core.set_newline(???)
 
     def get_selection_range(self):
@@ -112,7 +129,7 @@ class ZenEditor():
         offset_start, offset_end = self.get_current_line_range()
         iter_start = self.buffer.get_iter_at_offset(offset_start)
         iter_end = self.buffer.get_iter_at_offset(offset_end)
-        return self.buffer.get_text(iter_start, iter_end)
+        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
 
     def replace_content(self, value, offset_start=None, offset_end=None):
         """
@@ -151,8 +168,6 @@ class ZenEditor():
         self.insertion_start = self.get_insert_offset()
         
         padding = zen_actions.get_current_line_padding(self)
-        # there's a bug when the snippet contains literal indentation
-        value = value.replace('\t', zen_core.get_variable('indentation'))
         self.buffer.insert_at_cursor(zen_core.pad_string(value, padding))
 
         self.insertion_end = self.get_insert_offset()
@@ -164,7 +179,7 @@ class ZenEditor():
         """
         iter_start = self.buffer.get_iter_at_offset(0)
         iter_end = self.get_end_iter()
-        return self.buffer.get_text(iter_start, iter_end)
+        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
 
     def get_syntax(self):
         """
@@ -185,45 +200,43 @@ class ZenEditor():
         """
         return 'xhtml'
 
+    #---------------------------------------------------------------------------------------
+
     def get_insert_iter(self):
         return self.buffer.get_iter_at_mark(self.buffer.get_insert())
         
     def get_insert_offset(self):
         return self.get_insert_iter().get_offset()
 
+    def get_selection_bound_iter(self):
+        return self.buffer.get_iter_at_mark(self.buffer.get_selection_bound())
+
     def get_selection_bound_offset(self):
-        return self.buffer.get_iter_at_mark(self.buffer.get_selection_bound()).get_offset()
+        return self.get_selection_bound_iter().get_offset()
 
     def get_end_iter(self):
         return self.buffer.get_iter_at_offset(self.buffer.get_char_count())
 
     def get_end_offset(self):
         return self.get_end_iter().get_offset()
-
-    def prompt(self, abbr):
-        """
-        Prompt user with gCocoaDialog
-        @param abbr: Previous abbreviation
-        @return: str
-        """
-        cmd = 'gcocoadialog inputbox --width 400 --title "Wrap text with Zen Coding"'
-        cmd += ' --informative-text "Abbreviation:" --text "{0}" --button1 "gtk-ok" --button2 "gtk-cancel"'
-        ok = False
-        for line in os.popen(cmd.format(abbr)).readlines():
-            line = line[:-1]
-            if line == "1":
-                ok = True
-            elif ok and len(line) > 0:
-                return line
-        return None
-
+        
     def start_edit(self):
         # bug when the cursor is at the very beginning
         if self.insertion_start == 0:
-            self.insertion_start = 1        
+            self.insertion_start = 1
         self.set_caret_pos(self.insertion_start)
-        if not self.next_edit_point():
+        if not self.next_edit_point() or (self.get_insert_offset() > self.insertion_end):
             self.set_caret_pos(self.insertion_end)
+    
+    def show_caret(self):
+        self.view.scroll_mark_onscreen(self.buffer.get_insert())
+
+    #---------------------------------------------------------------------------------------
+
+    def get_user_settings_error(self):
+        return zen_core.get_variable('user_settings_error')
+
+    #---------------------------------------------------------------------------------------
 
     def expand_abbreviation(self, window):
         self.set_context(window)
@@ -232,17 +245,57 @@ class ZenEditor():
         if result:
             self.start_edit()
         self.buffer.end_user_action()
+        
+    #---------------------------------------------------------------------------------------
+
+    def save_selection(self):
+        self.save_offset_insert = self.get_insert_offset()
+        self.save_offset_selection_bound = self.get_selection_bound_offset()
+
+    def restore_selection(self):
+        iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
+        iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)
+        self.buffer.select_range(iter_insert, iter_selection_bound)
+
+    #---------------------------------------------------------------------------------------
+
+    def do_expand_with_abbreviation(self, done, abbr):
+        self.buffer.begin_user_action()
+        if done:
+            self.buffer.undo()
+            self.restore_selection()
+        content = zen_core.expand_abbreviation(abbr, self.get_syntax(), self.get_profile_name())
+        if content:
+            self.replace_content(content, self.get_insert_offset())
+        self.buffer.end_user_action()
+        return not not content
+
+    def expand_with_abbreviation(self, window):
+        self.set_context(window)
+        self.save_selection()
+        done, self.last_expand = zen_dialog.main(self, window, self.do_expand_with_abbreviation, self.last_expand)
+        if done:
+            self.start_edit()
+
+    #---------------------------------------------------------------------------------------
+
+    def do_wrap_with_abbreviation(self, done, abbr):
+        self.buffer.begin_user_action()
+        if done:
+            self.buffer.undo()
+            self.restore_selection()
+        result = zen_actions.wrap_with_abbreviation(self, abbr)
+        self.buffer.end_user_action()
+        return result
 
     def wrap_with_abbreviation(self, window):
         self.set_context(window)
-        abbr = self.prompt(self.last_wrap)
-        if abbr:
-            self.last_wrap = abbr.replace(r'$', r'\$')
-            self.buffer.begin_user_action()
-            result = zen_actions.wrap_with_abbreviation(self, abbr.replace(r'\$', r'$'))
-            if result:
-                self.start_edit()
-            self.buffer.end_user_action()
+        self.save_selection()
+        done, self.last_wrap = zen_dialog.main(self, window, self.do_wrap_with_abbreviation, self.last_wrap)
+        if done:
+            self.start_edit()
+
+    #---------------------------------------------------------------------------------------
 
     def match_pair_inward(self, window):
         self.set_context(window)
@@ -259,15 +312,23 @@ class ZenEditor():
         self.buffer.end_user_action()
         return result
 
+    #---------------------------------------------------------------------------------------
+
     def prev_edit_point(self, window=None):
         if window:
             self.set_context(window)
-        return zen_actions.prev_edit_point(self)
+        result = zen_actions.prev_edit_point(self)
+        self.show_caret()
+        return result
 
     def next_edit_point(self, window=None):
         if window:
             self.set_context(window)
-        return zen_actions.next_edit_point(self)
+        result = zen_actions.next_edit_point(self)
+        self.show_caret()
+        return result
+
+    #---------------------------------------------------------------------------------------
 
     def update_image_size(self, window):
         self.set_context(window)

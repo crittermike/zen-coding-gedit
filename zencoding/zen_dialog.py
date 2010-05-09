@@ -74,10 +74,10 @@ class ZenDialog():
 
 def main(editor, window, callback, text=""):
 
-    # ensure the caret is hidden
+    # Ensure the caret is hidden.
     editor.view.set_cursor_visible(False)
     
-    # get coordinates of the cursor
+    # Get coordinates of the cursor.
     offset_start, offset_end = editor.get_selection_range()
     insert = editor.buffer.get_iter_at_offset(offset_start)
     location = editor.view.get_iter_location(insert)
@@ -85,13 +85,13 @@ def main(editor, window, callback, text=""):
     xo, yo = window.get_origin()
     xb, yb = editor.view.buffer_to_window_coords(gtk.TEXT_WINDOW_TEXT, location.x + location.width, location.y)
 
-    # open dialog at coordinates with eventual text
+    # Open dialog at coordinates with eventual text.
     my_zen_dialog = ZenDialog(editor, xo + xb, yo + yb, callback, text)
     my_zen_dialog.main()
 
-    # show the caret again
+    # Show the caret again.
     editor.view.set_cursor_visible(True)
 
-    # return exit status and abbreviation
+    # Return exit status and abbreviation.
     return my_zen_dialog.done and my_zen_dialog.exit, my_zen_dialog.abbreviation
 

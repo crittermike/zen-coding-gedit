@@ -15,7 +15,7 @@ zen_editor.get_selection_range();
 @author Sergey Chikuyonok (serge.che@gmail.com)
 @link http://chikuyonok.ru
 
-Gedit implementation
+Gedit implementation:
 @author Franck Marcia (franck.marcia@gmail.com)
 '''
 
@@ -112,7 +112,7 @@ class ZenEditor():
 
     def set_caret_pos(self, pos):
         """
-        Set new caret position
+        Sets the new caret position
         @type pos: int
         """
         self.buffer.place_cursor(self.buffer.get_iter_at_offset(pos))
@@ -129,7 +129,7 @@ class ZenEditor():
 
     def replace_content(self, value, offset_start=None, offset_end=None):
         """
-        Replace editor's content or it's part (from start to end index). If 
+        Replace editor's content or its part (from start to end index). If 
         value contains caret_placeholder, the editor will put caret into
         this position. If you skip start and end arguments, the whole target's 
         content will be replaced with value.

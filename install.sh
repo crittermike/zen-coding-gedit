@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Zen Coding installation
+# Install using `./install.sh` from the command line, or just manually paste in 
+# the commands listed below.
 #
 
 sudo cp zencoding.png /usr/share/icons/hicolor/16x16/apps

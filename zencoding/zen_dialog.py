@@ -1,3 +1,7 @@
+'''
+@author Franck Marcia (franck.marcia@gmail.com)
+'''
+
 import pygtk
 pygtk.require('2.0')
 import gtk

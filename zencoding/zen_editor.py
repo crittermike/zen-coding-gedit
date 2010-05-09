@@ -1,11 +1,10 @@
 '''
 High-level editor interface that communicates with underlying editor (like
-Espresso, Coda, etc.) or browser.
-Basically, you should call <code>set_context(obj)</code> method to
-set up undelying editor context before using any other method.
+Espresso, Coda, etc.) or browser. Basically, you should call set_context(obj) 
+method to set up undelying editor context before using any other method.
 
-This interface is used by <i>zen_actions.py</i> for performing different
-actions like <b>Expand abbreviation</b>
+This interface is used by zen_actions.py for performing different
+actions like Expand abbreviation
 
 @example
 import zen_editor
@@ -34,8 +33,8 @@ class ZenEditor():
 
     def set_context(self, context):
         """
-        Setup underlying editor context. You should call this method
-        <code>before</code> using any Zen Coding action.
+        Setup underlying editor context. You should call this method before 
+        using any Zen Coding action.
         @param context: context object
         """
         self.context = context # window
@@ -60,8 +59,6 @@ class ZenEditor():
         else:
             zen_core.set_variable('indentation', "\t")
         
-        #zen_core.set_newline(???)
-
     def get_selection_range(self):
         """
         Returns character indexes of selected text
@@ -79,9 +76,8 @@ class ZenEditor():
 
     def create_selection(self, offset_start, offset_end=None):
         """
-        Creates selection from <code>start</code> to <code>end</code> character
-        indexes. If <code>end</code> is ommited, this method should place caret
-        and <code>start</code> index
+        Creates selection from start to end character indexes. If end is 
+        omitted, this method should place caret and start index.
         @type start: int
         @type end: int
         @example
@@ -133,20 +129,16 @@ class ZenEditor():
 
     def replace_content(self, value, offset_start=None, offset_end=None):
         """
-        Replace editor's content or it's part (from <code>start</code> to
-        <code>end</code> index). If <code>value</code> contains
-        <code>caret_placeholder</code>, the editor will put caret into
-        this position. If you skip <code>start</code> and <code>end</code>
-        arguments, the whole target's content will be replaced with
-        <code>value</code>.
+        Replace editor's content or it's part (from start to end index). If 
+        value contains caret_placeholder, the editor will put caret into
+        this position. If you skip start and end arguments, the whole target's 
+        content will be replaced with value.
 
-        If you pass <code>start</code> argument only,
-        the <code>value</code> will be placed at <code>start</code> string
-        index of current content.
+        If you pass start argument only, the value will be placed at start 
+        string index of current content.
 
-        If you pass <code>start</code> and <code>end</code> arguments,
-        the corresponding substring of current target's content will be
-        replaced with <code>value</code>
+        If you pass start and end arguments, the corresponding substring of 
+        current target's content will be replaced with value
         @param value: Content you want to paste
         @type value: str
         @param start: Start index of editor's content
@@ -200,8 +192,6 @@ class ZenEditor():
         """
         return 'xhtml'
 
-    #---------------------------------------------------------------------------------------
-
     def get_insert_iter(self):
         return self.buffer.get_iter_at_mark(self.buffer.get_insert())
         
@@ -221,7 +211,7 @@ class ZenEditor():
         return self.get_end_iter().get_offset()
         
     def start_edit(self):
-        # bug when the cursor is at the very beginning
+        # Bug when the cursor is at the very beginning.
         if self.insertion_start == 0:
             self.insertion_start = 1
         self.set_caret_pos(self.insertion_start)
@@ -231,12 +221,8 @@ class ZenEditor():
     def show_caret(self):
         self.view.scroll_mark_onscreen(self.buffer.get_insert())
 
-    #---------------------------------------------------------------------------------------
-
     def get_user_settings_error(self):
         return zen_core.get_variable('user_settings_error')
-
-    #---------------------------------------------------------------------------------------
 
     def expand_abbreviation(self, window):
         self.set_context(window)
@@ -245,8 +231,6 @@ class ZenEditor():
         if result:
             self.start_edit()
         self.buffer.end_user_action()
-        
-    #---------------------------------------------------------------------------------------
 
     def save_selection(self):
         self.save_offset_insert = self.get_insert_offset()
@@ -256,8 +240,6 @@ class ZenEditor():
         iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
         iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)
         self.buffer.select_range(iter_insert, iter_selection_bound)
-
-    #---------------------------------------------------------------------------------------
 
     def do_expand_with_abbreviation(self, done, abbr):
         self.buffer.begin_user_action()
@@ -277,8 +259,6 @@ class ZenEditor():
         if done:
             self.start_edit()
 
-    #---------------------------------------------------------------------------------------
-
     def do_wrap_with_abbreviation(self, done, abbr):
         self.buffer.begin_user_action()
         if done:
@@ -295,8 +275,6 @@ class ZenEditor():
         if done:
             self.start_edit()
 
-    #---------------------------------------------------------------------------------------
-
     def match_pair_inward(self, window):
         self.set_context(window)
         zen_actions.match_pair_inward(self)
@@ -312,8 +290,6 @@ class ZenEditor():
         self.buffer.end_user_action()
         return result
 
-    #---------------------------------------------------------------------------------------
-
     def prev_edit_point(self, window=None):
         if window:
             self.set_context(window)
@@ -327,8 +303,6 @@ class ZenEditor():
         result = zen_actions.next_edit_point(self)
         self.show_caret()
         return result
-
-    #---------------------------------------------------------------------------------------
 
     def update_image_size(self, window):
         self.set_context(window)

@@ -23,7 +23,7 @@ Gedit implementation
 import zen_core, zen_actions
 import os, re, locale
 from image_size import update_image_size
-import wrap_dialog, expand_dialog
+import zen_dialog
 
 class ZenEditor():
 
@@ -200,6 +200,8 @@ class ZenEditor():
         """
         return 'xhtml'
 
+    #---------------------------------------------------------------------------------------
+
     def get_insert_iter(self):
         return self.buffer.get_iter_at_mark(self.buffer.get_insert())
         
@@ -229,8 +231,12 @@ class ZenEditor():
     def show_caret(self):
         self.view.scroll_mark_onscreen(self.buffer.get_insert())
 
+    #---------------------------------------------------------------------------------------
+
     def get_user_settings_error(self):
         return zen_core.get_variable('user_settings_error')
+
+    #---------------------------------------------------------------------------------------
 
     def expand_abbreviation(self, window):
         self.set_context(window)
@@ -240,6 +246,17 @@ class ZenEditor():
             self.start_edit()
         self.buffer.end_user_action()
         
+    #---------------------------------------------------------------------------------------
+
+    def save_selection(self):
+        self.save_offset_insert = self.get_insert_offset()
+        self.save_offset_selection_bound = self.get_selection_bound_offset()
+
+    def restore_selection(self):
+        iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
+        iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)
+        self.buffer.select_range(iter_insert, iter_selection_bound)
+
     #---------------------------------------------------------------------------------------
 
     def do_expand_with_abbreviation(self, done, abbr):
@@ -256,20 +273,11 @@ class ZenEditor():
     def expand_with_abbreviation(self, window):
         self.set_context(window)
         self.save_selection()
-        done, self.last_expand = expand_dialog.main(self, window, self.last_expand)
+        done, self.last_expand = zen_dialog.main(self, window, self.do_expand_with_abbreviation, self.last_expand)
         if done:
             self.start_edit()
 
     #---------------------------------------------------------------------------------------
-
-    def save_selection(self):
-        self.save_offset_insert = self.get_insert_offset()
-        self.save_offset_selection_bound = self.get_selection_bound_offset()
-
-    def restore_selection(self):
-        iter_insert = self.buffer.get_iter_at_offset(self.save_offset_insert)
-        iter_selection_bound = self.buffer.get_iter_at_offset(self.save_offset_selection_bound)
-        self.buffer.select_range(iter_insert, iter_selection_bound)
 
     def do_wrap_with_abbreviation(self, done, abbr):
         self.buffer.begin_user_action()
@@ -283,9 +291,11 @@ class ZenEditor():
     def wrap_with_abbreviation(self, window):
         self.set_context(window)
         self.save_selection()
-        done, self.last_wrap = wrap_dialog.main(self, window, self.last_wrap)
+        done, self.last_wrap = zen_dialog.main(self, window, self.do_wrap_with_abbreviation, self.last_wrap)
         if done:
             self.start_edit()
+
+    #---------------------------------------------------------------------------------------
 
     def match_pair_inward(self, window):
         self.set_context(window)
@@ -302,6 +312,8 @@ class ZenEditor():
         self.buffer.end_user_action()
         return result
 
+    #---------------------------------------------------------------------------------------
+
     def prev_edit_point(self, window=None):
         if window:
             self.set_context(window)
@@ -315,6 +327,8 @@ class ZenEditor():
         result = zen_actions.next_edit_point(self)
         self.show_caret()
         return result
+
+    #---------------------------------------------------------------------------------------
 
     def update_image_size(self, window):
         self.set_context(window)

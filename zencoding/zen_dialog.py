@@ -2,14 +2,15 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 
-class WrapDialog():
+class ZenDialog():
 
-    def __init__(self, editor, x, y, text=""):
+    def __init__(self, editor, x, y, callback, text=""):
 
         self.editor = editor
         self.exit = False
         self.done = False
         self.abbreviation = text
+        self.callback = callback
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_decorated(False)
@@ -46,7 +47,7 @@ class WrapDialog():
             widget.quit()
         elif event.keyval == 65307: # Escape
             widget.exit = False
-            widget.done = widget.editor.do_wrap_with_abbreviation(widget.done, '')
+            widget.done = widget.callback(widget.done, '')
             widget.quit()
         else:
             return False
@@ -57,7 +58,7 @@ class WrapDialog():
 
     def update(self, entry):
         self.abbreviation = self.entry.get_text()
-        self.done = self.editor.do_wrap_with_abbreviation(self.done, self.abbreviation)
+        self.done = self.callback(self.done, self.abbreviation)
 
     def quit(self, widget=None, event=None):
         self.window.hide()
@@ -67,7 +68,7 @@ class WrapDialog():
     def main(self):
         gtk.main()
 
-def main(editor, window, text=""):
+def main(editor, window, callback, text=""):
 
     # ensure the caret is hidden
     editor.view.set_cursor_visible(False)
@@ -81,12 +82,12 @@ def main(editor, window, text=""):
     xb, yb = editor.view.buffer_to_window_coords(gtk.TEXT_WINDOW_TEXT, location.x + location.width, location.y)
 
     # open dialog at coordinates with eventual text
-    wrap_dialog = WrapDialog(editor, xo + xb, yo + yb, text)
-    wrap_dialog.main()
+    my_zen_dialog = ZenDialog(editor, xo + xb, yo + yb, callback, text)
+    my_zen_dialog.main()
 
     # show the caret again
     editor.view.set_cursor_visible(True)
 
     # return exit status and abbreviation
-    return wrap_dialog.done and wrap_dialog.exit, wrap_dialog.abbreviation
+    return my_zen_dialog.done and my_zen_dialog.exit, my_zen_dialog.abbreviation
 

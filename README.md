@@ -49,6 +49,7 @@ Installation
  
 Credits
 -------
+
 - [Sergey Chikuyonok](http://chikuyonok.ru/) - the creator of Zen Coding
 - [Franck Marcia](http://github.com/fmarcia) - the author of this Gedit plugin
 - [Mike Crittenden](http://mikethecoder.com) - the maintainer of this Gedit plugin

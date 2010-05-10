@@ -57,8 +57,8 @@ class ZenDialog():
             return False
             
     def focus_lost(self, widget=None, event=None):
-        widget.exit = True
-        widget.quit()
+        self.exit = True
+        self.quit()
 
     def update(self, entry):
         self.abbreviation = self.entry.get_text()

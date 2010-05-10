@@ -10,7 +10,7 @@ expand expressions - similar to CSS selectors - into HTML code.
 - [Examples and usage](http://www.smashingmagazine.com/2009/11/21/zen-coding-a-new-way-to-write-html-code/)
 - [Descriptions of features](http://code.google.com/p/zen-coding/wiki/Actions)
 
-This plugin fully integrates Zen Coding into Gedit.
+This plugin integrates Zen Coding into Gedit.
 
 Features
 --------
@@ -31,9 +31,8 @@ With this plugin, you can:
 - Remove tag with `Ctrl+Alt+R`
 - Split or join tags with `Ctrl+Alt+J`
 - Toggle comment with `Ctrl+Alt+C`
-- Create your own abbreviations and snippets.
 
-Shortcuts can be changed in `~/.gnome2/gedit/plugins/zencoding/plugin.py` to fit your needs.
+Shortcuts can be changed in `zencoding/plugin.py` to fit your needs.
 
 Installation
 ------------

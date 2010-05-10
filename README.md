@@ -17,12 +17,12 @@ Features
 
 Zen Coding isn't only a decent abbreviations expander but also a set of handy tools for common XHTML tasks.
 Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) thoroughly for details.
-Note that almost every action highly depends on current caret position inside text editor.
+Note that almost every action highly depeType in an abbreviation to expandnds on current caret position inside text editor.
 
 With this plugin, you can:
 
 - Expand abbreviation with `Ctrl+E`
-- Expand with abbreviation with `Ctrl+Alt+E`
+- Expand abbreviation as you type with `Ctrl+Alt+E`
 - Wrap with abbreviation with `Ctrl+Shift+E`
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Merge lines with `Ctrl+Alt+M`

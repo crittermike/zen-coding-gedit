@@ -35,7 +35,6 @@ class ZenDialog():
         self.entry = gtk.Entry()
         self.entry.connect("changed", self.update)
         self.entry.set_text(text)
-        self.entry.set_icon_from_icon_name(gtk.ENTRY_ICON_PRIMARY, 'zencoding')
         self.entry.set_width_chars(48)
         self.box.pack_start(self.entry, True, True, 4)
         self.entry.show()

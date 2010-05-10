@@ -1,11 +1,6 @@
 Zen Coding for Gedit
 ====================
 
-A new way of writing HTML and CSS code for Gedit.
-
-Information
------------
-
 Zen Coding is a plugin for high-speed HTML, XML, XSL (or any other structured code format)
 coding and editing. The core of this plugin is a powerful abbreviation engine which allows you to
 expand expressions - similar to CSS selectors - into HTML code.
@@ -44,7 +39,7 @@ Installation
 ------------
 
 1. Download [zip](http://github.com/mikecrittenden/zen-coding-gedit/zipball/master) or [tar](http://github.com/mikecrittenden/zen-coding-gedit/tarball/master) source and unpack it.
-2. Run `./install.sh`
+2. Move `zencoding.gedit-plugin` and the `zencoding` folder into `~/.gnome2/gedit/plugins/` 
 3. In order to use "Update tag image size", install `imagemagick` if not already installed
 4. In Gedit, go to Edit &rarr; Preferences &rarr; Plugins to enable the plugin.
 5. Try it out using the shortcut keys listed above.

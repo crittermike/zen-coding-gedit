@@ -27,7 +27,6 @@ With this plugin, you can:
 - Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
 - Merge lines with `Ctrl+Alt+M`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
-- Update tag image size with `Ctrl+Alt+S`
 - Remove tag with `Ctrl+Alt+R`
 - Split or join tags with `Ctrl+Alt+J`
 - Toggle comment with `Ctrl+Alt+C`
@@ -39,9 +38,8 @@ Installation
 
 1. Download [zip](http://github.com/mikecrittenden/zen-coding-gedit/zipball/master) or [tar](http://github.com/mikecrittenden/zen-coding-gedit/tarball/master) source and unpack it.
 2. Move `zencoding.gedit-plugin` and the `zencoding` folder into `~/.gnome2/gedit/plugins/` 
-3. In order to use "Update tag image size", install `imagemagick` if not already installed
-4. In Gedit, go to Edit &rarr; Preferences &rarr; Plugins to enable the plugin.
-5. Try it out using the shortcut keys listed above.
+3. In Gedit, go to Edit &rarr; Preferences &rarr; Plugins to enable the plugin.
+4. Try it out using the shortcut keys listed above.
  
 Credits
 -------

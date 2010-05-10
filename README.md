@@ -15,9 +15,9 @@ This plugin integrates Zen Coding into Gedit.
 Features
 --------
 
-Zen Coding isn't only a decent abbreviations expander but also a set of handy tools for common XHTML tasks.
-Read [this page](http://code.google.com/p/zen-coding/wiki/Actions) thoroughly for details.
-Note that almost every action highly depeType in an abbreviation to expandnds on current caret position inside text editor.
+Zen Coding is a swiss army knife for common CSS and XHTML tasks. [Read this](http://code.google.com/p/zen-coding/wiki/Actions) 
+for details. Note that almost every action highly depends on current caret
+position inside text editor.
 
 With this plugin, you can:
 

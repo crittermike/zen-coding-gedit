@@ -41,7 +41,7 @@ class ZenEditor():
         self.view = context.get_active_view()
         self.document = context.get_active_document()
         
-        default_locale = locale.getdefaultlocale()[0]
+        default_locale = locale.getdefaultlocale()[0] if locale.getdefaultlocale()[0] else "en_US"
         lang = re.sub(r'_[^_]+$', '', default_locale)
         if lang != default_locale:
             zen_core.set_variable('lang', lang)

@@ -263,6 +263,12 @@ def find_new_edit_point(editor, inc=1, offset=0):
 		elif cur_char == '>' and next_char == '<':
 			# between tags
 			next_point = cur_point + 1
+		elif cur_char == ':' and next_char == ';':
+			# empty CSS value
+			next_point = cur_point + 1
+		elif cur_char == '(' and next_char == ')':
+		    # empty CSS parenthesis
+		    next_point = cur_point + 1
 		elif cur_char in '\r\n':
 			# empty line
 			if re.search(re_empty_line, get_line(cur_point - 1)):

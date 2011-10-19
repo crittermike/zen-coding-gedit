@@ -5,8 +5,9 @@
 # Author Franck Marcia (franck.marcia@gmail.com)
 #
 
-import gedit, gobject, gtk, os
+import gedit, gobject, os
 
+from gi.repository import Gtk
 from zen_editor import ZenEditor
 
 zencoding_ui_str = """
@@ -56,7 +57,7 @@ class ZenCodingPlugin(gedit.Plugin):
         ]
         windowdata = dict()
         window.set_data("ZenCodingPluginDataKey", windowdata)
-        windowdata["action_group"] = gtk.ActionGroup("GeditZenCodingPluginActions")
+        windowdata["action_group"] = Gtk.ActionGroup("GeditZenCodingPluginActions")
         windowdata["action_group"].add_actions(actions, window)
         manager = window.get_ui_manager()
         manager.insert_action_group(windowdata["action_group"], -1)
@@ -65,8 +66,8 @@ class ZenCodingPlugin(gedit.Plugin):
         self.editor = ZenEditor()
         error = self.editor.get_user_settings_error()
         if error:
-            md = gtk.MessageDialog(window, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR,
-                gtk.BUTTONS_CLOSE, "There is an error in user settings:")
+            md = Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.CLOSE, "There is an error in user settings:")
             message = "{0} on line {1} at character {2}\n\nUser settings will not be available."
             md.set_title("Zen Coding error")
             md.format_secondary_text(message.format(error['msg'], error['lineno'], error['offset']))

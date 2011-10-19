@@ -5,8 +5,9 @@
 # Author Franck Marcia (franck.marcia@gmail.com)
 #
 
-import gedit, gobject, os
+import gedit, os
 
+from gi.repository import GObject
 from gi.repository import Gtk
 from zen_editor import ZenEditor
 

@@ -4,11 +4,8 @@
 #
 # Author Franck Marcia (franck.marcia@gmail.com)
 #
-
-import gedit, os
-
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gedit, GObject, Gtk
+import os
 from zen_editor import ZenEditor
 
 zencoding_ui_str = """
@@ -38,7 +35,7 @@ zencoding_ui_str = """
 </ui>
 """
 
-class ZenCodingPlugin(gedit.Plugin):
+class ZenCodingPlugin(Gedit.Plugin):
     """A Gedit plugin to implement Zen Coding's HTML and CSS shorthand expander."""
 
     def activate(self, window):

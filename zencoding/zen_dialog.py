@@ -2,8 +2,6 @@
 @author Franck Marcia (franck.marcia@gmail.com)
 '''
 
-import gi
-gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 class ZenDialog():
@@ -16,7 +14,7 @@ class ZenDialog():
         self.abbreviation = text
         self.callback = callback
 
-        self.window = Gtk.Window(Gtk.WindowType.TOPLEVEL)
+        self.window = Gtk.Window(type=Gtk.WindowType.TOPLEVEL)
         self.window.set_decorated(False)
         self.window.connect("destroy", self.quit)
         self.window.connect("focus-out-event", self.focus_lost)
@@ -82,7 +80,7 @@ def main(editor, window, callback, text=""):
     insert = editor.buffer.get_iter_at_offset(offset_start)
     location = editor.view.get_iter_location(insert)
     window = editor.view.get_window(Gtk.TextWindowType.TEXT)
-    xo, yo = window.get_origin()
+    thing, xo, yo = window.get_origin()
     xb, yb = editor.view.buffer_to_window_coords(Gtk.TextWindowType.TEXT, location.x + location.width, location.y)
 
     # Open dialog at coordinates with eventual text.

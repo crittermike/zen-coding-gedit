@@ -37,10 +37,11 @@ Installation
 ------------
 
 1. Download [zip](http://github.com/mikecrittenden/zen-coding-gedit/zipball/master) or [tar](http://github.com/mikecrittenden/zen-coding-gedit/tarball/master) source and unpack it.
-2. Move `zencoding.gedit-plugin` and the `zencoding` folder into `~/.gnome2/gedit/plugins/` 
+2. *Gedit 2: Move `zencoding.gedit-plugin` and the `zencoding` folder into `~/.gnome2/gedit/plugins/` 
+	 *Gedit 3: Move `zencoding.plugin` and the `zencoding` folder into `~/.local/share/gedit/plugins/` 
+2. 
 3. In Gedit, go to Edit &rarr; Preferences &rarr; Plugins to enable the plugin.
 4. Try it out using the shortcut keys listed above.
- 
 Credits
 -------
 

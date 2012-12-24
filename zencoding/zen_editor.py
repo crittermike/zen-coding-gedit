@@ -124,7 +124,7 @@ class ZenEditor():
         offset_start, offset_end = self.get_current_line_range()
         iter_start = self.buffer.get_iter_at_offset(offset_start)
         iter_end = self.buffer.get_iter_at_offset(offset_end)
-        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
+        return self.buffer.get_text(iter_start, iter_end, False).decode(self.encoding)
 
     def replace_content(self, value, offset_start=None, offset_end=None):
         """
@@ -170,7 +170,7 @@ class ZenEditor():
         """
         iter_start = self.buffer.get_iter_at_offset(0)
         iter_end = self.get_end_iter()
-        return self.buffer.get_text(iter_start, iter_end).decode(self.encoding)
+        return self.buffer.get_text(iter_start, iter_end, False).decode(self.encoding)
 
     def get_syntax(self):
         """

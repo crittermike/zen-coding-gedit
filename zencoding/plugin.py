@@ -35,10 +35,12 @@ zencoding_ui_str = """
 </ui>
 """
 
-class ZenCodingPlugin(Gedit.Plugin):
+class ZenCodingPlugin(GObject.Object, Gedit.WindowActivatable):
     """A Gedit plugin to implement Zen Coding's HTML and CSS shorthand expander."""
 
-    def activate(self, window):
+    window = GObject.property(type=Gedit.Window)
+    
+    def do_activate(self):
         actions = [
           ('ZenCodingMenuAction',     None, '_Zen Coding',                  None,            "Zen Coding tools",                            None),
           ('ZenCodingExpandAction',   None, '_Expand abbreviation',         '<Ctrl>E',        "Expand abbreviation to raw HTML/CSS",         self.expand_abbreviation),
@@ -54,17 +56,17 @@ class ZenCodingPlugin(Gedit.Plugin):
           ('ZenCodingCommentAction',  None, 'Toggle _comment',              '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",               self.toggle_comment)
         ]
         windowdata = dict()
-        window.set_data("ZenCodingPluginDataKey", windowdata)
+        self.window.set_data("ZenCodingPluginDataKey", windowdata)
         windowdata["action_group"] = Gtk.ActionGroup("GeditZenCodingPluginActions")
-        windowdata["action_group"].add_actions(actions, window)
-        manager = window.get_ui_manager()
+        windowdata["action_group"].add_actions(actions)
+        manager = self.window.get_ui_manager()
         manager.insert_action_group(windowdata["action_group"], -1)
         windowdata["ui_id"] = manager.add_ui_from_string(zencoding_ui_str)
-        window.set_data("ZenCodingPluginInfo", windowdata)
+        self.window.set_data("ZenCodingPluginInfo", windowdata)
         self.editor = ZenEditor()
         error = self.editor.get_user_settings_error()
         if error:
-            md = Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
+            md = Gtk.MessageDialog(self.window, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR,
                 Gtk.ButtonsType.CLOSE, "There is an error in user settings:")
             message = "{0} on line {1} at character {2}\n\nUser settings will not be available."
             md.set_title("Zen Coding error")
@@ -73,46 +75,46 @@ class ZenCodingPlugin(Gedit.Plugin):
             md.destroy()
 
 
-    def deactivate(self, window):
-        windowdata = window.get_data("ZenCodingPluginDataKey")
-        manager = window.get_ui_manager()
+    def do_deactivate(self):
+        windowdata = self.window.get_data("ZenCodingPluginDataKey")
+        manager = self.window.get_ui_manager()
         manager.remove_ui(windowdata["ui_id"])
         manager.remove_action_group(windowdata["action_group"])
 
-    def update_ui(self, window):
-        view = window.get_active_view()
-        windowdata = window.get_data("ZenCodingPluginDataKey")
+    def do_update_state(self):
+        view = self.window.get_active_view()
+        windowdata = self.window.get_data("ZenCodingPluginDataKey")
         windowdata["action_group"].set_sensitive(bool(view and view.get_editable()))
 
-    def expand_abbreviation(self, action, window):
-        self.editor.expand_abbreviation(window)
+    def expand_abbreviation(self, action):
+        self.editor.expand_abbreviation(self.window)
         
-    def expand_with_abbreviation(self, action, window):
-        self.editor.expand_with_abbreviation(window)
+    def expand_with_abbreviation(self, action):
+        self.editor.expand_with_abbreviation(self.window)
 
-    def wrap_with_abbreviation(self, action, window):
-        self.editor.wrap_with_abbreviation(window)
+    def wrap_with_abbreviation(self, action):
+        self.editor.wrap_with_abbreviation(self.window)
 
-    def match_pair_inward(self, action, window):
-        self.editor.match_pair_inward(window)
+    def match_pair_inward(self, action):
+        self.editor.match_pair_inward(self.window)
 
-    def match_pair_outward(self, action, window):
-        self.editor.match_pair_outward(window)
+    def match_pair_outward(self, action):
+        self.editor.match_pair_outward(self.window)
 
-    def merge_lines(self, action, window):
-        self.editor.merge_lines(window)
+    def merge_lines(self, action):
+        self.editor.merge_lines(self.window)
 
-    def prev_edit_point(self, action, window):
-        self.editor.prev_edit_point(window)
+    def prev_edit_point(self, action):
+        self.editor.prev_edit_point(self.window)
 
-    def next_edit_point(self, action, window):
-        self.editor.next_edit_point(window)
+    def next_edit_point(self, action):
+        self.editor.next_edit_point(self.window)
 
-    def remove_tag(self, action, window):
-        self.editor.remove_tag(window)
+    def remove_tag(self, action):
+        self.editor.remove_tag(self.window)
 
-    def split_join_tag(self, action, window):
-        self.editor.split_join_tag(window)
+    def split_join_tag(self, action):
+        self.editor.split_join_tag(self.window)
 
-    def toggle_comment(self, action, window):
-        self.editor.toggle_comment(window)
+    def toggle_comment(self, action):
+        self.editor.toggle_comment(self.window)

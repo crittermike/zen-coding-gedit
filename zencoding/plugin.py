@@ -56,13 +56,13 @@ class ZenCodingPlugin(GObject.Object, Gedit.WindowActivatable):
           ('ZenCodingCommentAction',  None, 'Toggle _comment',              '<Ctrl><Alt>C',   "Toggle an XML or HTML comment",               self.toggle_comment)
         ]
         windowdata = dict()
-        self.window.set_data("ZenCodingPluginDataKey", windowdata)
+        self.window.ZenCodingPluginDataKey = windowdata
         windowdata["action_group"] = Gtk.ActionGroup("GeditZenCodingPluginActions")
         windowdata["action_group"].add_actions(actions)
         manager = self.window.get_ui_manager()
         manager.insert_action_group(windowdata["action_group"], -1)
         windowdata["ui_id"] = manager.add_ui_from_string(zencoding_ui_str)
-        self.window.set_data("ZenCodingPluginInfo", windowdata)
+        self.window.ZenCodingPluginInfo = windowdata
         self.editor = ZenEditor()
         error = self.editor.get_user_settings_error()
         if error:
@@ -76,14 +76,14 @@ class ZenCodingPlugin(GObject.Object, Gedit.WindowActivatable):
 
 
     def do_deactivate(self):
-        windowdata = self.window.get_data("ZenCodingPluginDataKey")
+        windowdata = self.window.ZenCodingPluginDataKey
         manager = self.window.get_ui_manager()
         manager.remove_ui(windowdata["ui_id"])
         manager.remove_action_group(windowdata["action_group"])
 
     def do_update_state(self):
         view = self.window.get_active_view()
-        windowdata = self.window.get_data("ZenCodingPluginDataKey")
+        windowdata = self.window.ZenCodingPluginDataKey
         windowdata["action_group"].set_sensitive(bool(view and view.get_editable()))
 
     def expand_abbreviation(self, action):

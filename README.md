@@ -24,7 +24,7 @@ With this plugin, you can:
 - Expand abbreviation with `Ctrl+E`
 - Expand abbreviation as you type with `Ctrl+Alt+E`
 - Wrap with abbreviation with `Ctrl+Shift+E`
-- Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+O`
+- Balance tag inward or outward with `Ctrl+Alt+I` or `Ctrl+Alt+Shift+O`
 - Merge lines with `Ctrl+Alt+M`
 - Go to previous or next edit point with `Alt+Left` and `Alt+Right`
 - Remove tag with `Ctrl+Alt+R`
@@ -37,10 +37,9 @@ Installation
 ------------
 
 1. Download [zip](http://github.com/mikecrittenden/zen-coding-gedit/zipball/master) or [tar](http://github.com/mikecrittenden/zen-coding-gedit/tarball/master) source and unpack it.
-2. Move `zencoding.gedit-plugin` and the `zencoding` folder into `~/.gnome2/gedit/plugins/` 
+2. Move `zencoding.plugin` and the `zencoding` folder into `~/.local/share/gedit/plugins/` 
 3. In Gedit, go to Edit &rarr; Preferences &rarr; Plugins to enable the plugin.
 4. Try it out using the shortcut keys listed above.
- 
 Credits
 -------
 

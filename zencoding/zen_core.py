@@ -24,9 +24,10 @@ Created on Apr 17, 2009
 
 @author: Sergey Chikuyonok (http://chikuyonok.ru)
 '''
-from zen_settings import zen_settings
+from .zen_settings import zen_settings
 import re
-import stparser
+from . import stparser
+import collections
 
 newline = '\n'
 "Newline symbol"
@@ -90,7 +91,7 @@ def has_deep_key(obj, key):
 	for v in key:
 		if hasattr(last_obj, v):
 			last_obj = getattr(last_obj, v)
-		elif last_obj.has_key(v):
+		elif v in last_obj:
 			last_obj = last_obj[v]
 		else:
 			return False
@@ -137,7 +138,7 @@ def create_profile(options):
 	@param options: Profile options
 	@type options: dict
 	"""
-	for k, v in default_profile.items():
+	for k, v in list(default_profile.items()):
 		options.setdefault(k, v)
 	
 	return options
@@ -189,7 +190,7 @@ def pad_string(text, pad):
 	"""
 	pad_str = ''
 	result = ''
-	if isinstance(pad, basestring):
+	if isinstance(pad, str):
 		pad_str = pad
 	else:
 		pad_str = get_indentation() * pad
@@ -572,7 +573,7 @@ def rollout_tree(tree, parent=None):
 			add_point = tag.find_deepest_child() or tag
 			
 			if tag_content:
-				if isinstance(tag_content, basestring):
+				if isinstance(tag_content, str):
 					add_point.content = tag_content
 				else:
 					add_point.content = tag_content[j] or ''
@@ -587,15 +588,15 @@ def run_filters(tree, profile, filter_list):
 	@param filter_list: str, list
 	@return: ZenNode
 	"""
-	import filters
+	from . import filters
 	
-	if isinstance(profile, basestring) and profile in profiles:
+	if isinstance(profile, str) and profile in profiles:
 		profile = profiles[profile];
 	
 	if not profile:
 		profile = profiles['plain']
 		
-	if isinstance(filter_list, basestring):
+	if isinstance(filter_list, str):
 		filter_list = re.split(r'[\|,]', filter_list)
 		
 	for name in filter_list:
@@ -735,7 +736,7 @@ def replace_unescaped_symbol(text, symbol, replace):
 			cur_sl = sl
 			match_count += 1
 			new_value = replace
-			if callable(new_value):
+			if isinstance(new_value, collections.Callable):
 				replace_data = replace(text, symbol, i, match_count)
 				if replace_data:
 					cur_sl = len(replace_data[0])
@@ -769,7 +770,7 @@ def run_action(name, *args, **kwargs):
 	 zen_coding.run_actions('expand_abbreviation', zen_editor)
 	 zen_coding.run_actions('wrap_with_abbreviation', zen_editor, 'div')  
 	"""
-	import zen_actions
+	from . import zen_actions
 	
 	try:
 		if hasattr(zen_actions, name):
@@ -911,7 +912,7 @@ def get_caret_placeholder():
 	Returns caret placeholder
 	@return: str
 	"""
-	if callable(caret_placeholder):
+	if isinstance(caret_placeholder, collections.Callable):
 		return caret_placeholder()
 	else:
 		return caret_placeholder
@@ -945,7 +946,7 @@ def apply_filters(tree, syntax, profile, additional_filters=None):
 		
 	if additional_filters:
 		_filters += '|'
-		if isinstance(additional_filters, basestring):
+		if isinstance(additional_filters, str):
 			_filters += additional_filters
 		else:
 			_filters += '|'.join(additional_filters)
@@ -1046,7 +1047,7 @@ class Tag(object):
 		self._abbr = abbr
 		self.__content = ''
 		self.repeat_by_lines = False
-		self._res = zen_settings.has_key(doc_type) and zen_settings[doc_type] or {}
+		self._res = doc_type in zen_settings and zen_settings[doc_type] or {}
 		self.parent = None
 		
 		# add default attributes

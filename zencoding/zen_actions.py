@@ -11,7 +11,7 @@ This layer describes all available Zen Coding actions, like
 from zencoding import zen_core as zen_coding
 from zencoding import html_matcher
 import re
-from zen_core import char_at
+from .zen_core import char_at
 
 def find_abbreviation(editor):
 	"""
@@ -392,7 +392,7 @@ def merge_lines(editor):
 	if start != end:
 		# got range, merge lines
 		text = editor.get_content()[start:end]
-		lines = map(lambda s: re.sub(r'^\s+', '', s), zen_coding.split_by_lines(text))
+		lines = [re.sub(r'^\s+', '', s) for s in zen_coding.split_by_lines(text)]
 		text = re.sub(r'\s{2,}', ' ', ''.join(lines))
 		editor.replace_content(text, start, end)
 		editor.create_selection(start, start + len(text))

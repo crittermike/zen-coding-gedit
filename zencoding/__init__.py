@@ -1,3 +1,3 @@
 # And away we go...
-from plugin import ZenCodingPlugin
+from .plugin import ZenCodingPlugin
 

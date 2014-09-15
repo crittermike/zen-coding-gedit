@@ -8,7 +8,7 @@ from copy import deepcopy
 
 import re
 import types
-from zen_settings import zen_settings
+from .zen_settings import zen_settings
 
 _original_settings = deepcopy(zen_settings)
 
@@ -79,7 +79,7 @@ def _parse_abbreviations(obj):
 	Parses all abbreviations inside dictionary
  	@param obj: dict
 	"""
-	for key, value in obj.items():
+	for key, value in list(obj.items()):
 		key = key.strip()
 		if key[-1] == '+':
 #			this is expando, leave 'value' as is
@@ -98,12 +98,12 @@ def parse(settings):
 	in zen coding (for example, expanding abbreviation)
  	@type settings: dict
 	"""
-	for p, value in settings.items():
+	for p, value in list(settings.items()):
 		if p == 'abbreviations':
 			_parse_abbreviations(value)
 		elif p == 'extends':
 			settings[p] = [v.strip() for v in value.split(',')]
-		elif type(value) == types.DictType:
+		elif type(value) == dict:
 			parse(value)
 
 
@@ -114,8 +114,8 @@ def extend(parent, child):
 	@type parent: dict
 	@type child: dict
 	"""
-	for p, value in child.items():
-		if type(value) == types.DictType:
+	for p, value in list(child.items()):
+		if type(value) == dict:
 			if p not in parent:
 				parent[p] = {}
 			extend(parent[p], value)
@@ -129,12 +129,12 @@ def create_maps(obj):
 	Create hash maps on certain string properties of zen settings
 	@type obj: dict
 	"""
-	for p, value in obj.items():
+	for p, value in list(obj.items()):
 		if p == 'element_types':
-			for k, v in value.items():
+			for k, v in list(value.items()):
 				if isinstance(v, str):
 					value[k] = [el.strip() for el in v.split(',')]
-		elif type(value) == types.DictType:
+		elif type(value) == dict:
 			create_maps(value)
 
 

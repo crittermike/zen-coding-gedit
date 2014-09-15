@@ -1,7 +1,7 @@
-[Gedit Plugin]
-Loader=python
+[Plugin]
+Loader=python3
 Module=zencoding
-IAge=2
+IAge=3
 Name=Zen Coding
 Name[ru]=Дзэн-разработка
 Description=Enables Zen Coding's CSS and HTML tools for Gedit.
